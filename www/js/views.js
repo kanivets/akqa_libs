@@ -1,27 +1,39 @@
-var MainNavView = Backbone.View.extend({
+var HeadView = Backbone.View.extend({
+	render : function(that) {
+		console.log(that);//, this.model, this.model.getTitle(), this.template(this.model.getTitle()));
+		
+		var t = that.templateCompiled({title: that.model.getTitle()});
+		console.log( t);
+		that.$el.html(t);	
+	},	
+	
+	templateCompiled : null,
+	
+	initialize : function() {	
+		var that = this;
+		
+		this.templateCompiled = _.template(this.$el.html());
+		console.log(this.templateCompiled);
+		
+		this.model.on('change:title', function(){that.render(that)});	
+	}
+});
 
-	tagName : "nav",
+var NavView = Backbone.View.extend({
 
 	events : {
-		"click a" : "changePage"
+		"click a" : "onClickedNavElement"
 	},
 
-	changePage : function() {
-		
-		console.log(this);
-		
-		/*
-		
-		var that = this;
-		$('div.part').hide();
-		$('div#part').hide();
-	
+  
+	onClickedNavElement : function(e) {		
 		e.preventDefault();	
-		app.router.navigate($(this).data('link'), {trigger: true});
-		*/
+		App.routers.mainRouter.navigate(e.target.getAttribute('data-link'), {trigger: true});		
 	},
 	
-	render : function() {
-		
+	render : function() {		
+	},
+	
+	initialize : function() {
 	}
 });

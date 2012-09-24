@@ -1,14 +1,32 @@
 $(document).ready(function() {
-	console.log('loaded');
+		
+	_.templateSettings = { interpolate : /\{\{(.+?)\}\}/g };
 	
-	app = {};
-	app.router = new WorkspaceRouter();
-	Backbone.history.start({
-		pushState : true
+	App = {};
+	App.routers = {};
+	App.views = {};
+	App.models = {};
+		
+	App.routers.mainRouter = new MainRouter();
+	Backbone.history.start({pushState : true});
+
+	
+	App.models = {};
+	App.models.head = new HeadModel();
+	
+	console.log($("div.login-page-container"));
+	
+	
+	App.views.head = new HeadView({
+		model : App.models.head,
+		el : "title"
 	});
 	
-	app.views = {};
-	app.views.nav = new MainNavView();
+	App.views.nav = new NavView({
+		el : "nav"
+	});
 	
-	app.router.navigate('index.html#first', {trigger: true});
-}); 
+	App.routers.mainRouter.navigate('index.html?first', {
+		trigger : true
+	});		
+});

@@ -1,30 +1,32 @@
-var WorkspaceRouter = Backbone.Router.extend({
+var MainRouter = Backbone.Router.extend({
+
+	current_part : 'main',
 
 	routes : {
 		"" : 						"first", // #help
-		"index.html#first" : 		"first", // #help
-		"index.html#second" : 		"second", // #search/kiwis
-		"index.html#third" : 		"third" // #search/kiwis/p7
+		"index.html?first" : 		"first", // #help
+		"index.html?second" : 		"second", // #search/kiwis
+		"index.html?third" : 		"third" // #search/kiwis/p7
 	},
 
 	first : function() {
-		console.log('login');
+		this.current_part = '-first-';
 		
 		$('div.part').hide();
 		$('div#part_first').show();
 	},
 
 	second : function() {
-		console.log('second');
+		this.current_part = '-second-';
+		
 		$('div.part').hide();
 		$('div#part_second').show();
 	},
 
 	third : function() {
-		console.log('third');
+		this.current_part = '-third-';
+		
 		$('div.part').hide();
 		$('div#part_third').show();
-	},
-		
-	
+	}
 });
