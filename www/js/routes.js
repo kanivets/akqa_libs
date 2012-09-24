@@ -25,16 +25,6 @@ var WorkspaceRouter = Backbone.Router.extend({
 		$('div.part').hide();
 		$('div#part_third').show();
 	},
-	
-	initialize : function(options) {
-		var that = this;
-		$('div.part').hide();
-		
-		$('nav a').click(function(e) {
-			e.preventDefault();	
-			that.navigate($(this).data('link'), {trigger: true});
-		});
-	}
 		
 	
 });

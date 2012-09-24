@@ -7,5 +7,8 @@ $(document).ready(function() {
 		pushState : true
 	});
 	
+	app.views = {};
+	app.views.nav = new MainNavView();
+	
 	app.router.navigate('index.html#first', {trigger: true});
 }); 

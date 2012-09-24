@@ -20,8 +20,8 @@
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/libs/jquery-1.8.2.min.js"><\/script>')</script>
         
         <!-- <script src="//connect.facebook.net/en_US/all.js"></script> <!-- FB JS SDK -->
         <script src="js/libs/modernizr.js"></script>
@@ -34,13 +34,18 @@
         <script src="js/libs/jasmine.js"></script>
         
         <script src="js/routes.js"></script>
+        <script src="js/views.js"></script>
         <script src="js/main.js"></script>
 
 		<nav>
-			<a data-link="index.html#first" href="">first</a> | 
-			<a data-link="index.html#second" href="">second</a> | 
-			<a data-link="index.html#third" href="">third</a>
+			<a data-link="index.html#first" data-view-id="part_first" href="">first</a> | 
+			<a data-link="index.html#second" data-view-id="part_second" href="">second</a> | 
+			<a data-link="index.html#third" data-view-id="part_third" href="">third</a>
 		</nav>
+		
+		<div class="login-page-container">
+			
+		</div>
 		
 		<div class="part" id="part_first">NOW SHOWING FIRST</div>
 		<div class="part" id="part_second">NOW SHOWING SECOND</div>
