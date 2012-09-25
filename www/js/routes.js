@@ -1,32 +1,42 @@
-var MainRouter = Backbone.Router.extend({
+var App = App || {};
+App.proto = App.proto || {};
+App.proto.routers = App.proto.routers || {};
+
+App.proto.routers.main = Backbone.Router.extend({
 
 	current_part : 'main',
 
 	routes : {
-		"" : 						"first", // #help
-		"index.html?first" : 		"first", // #help
-		"index.html?second" : 		"second", // #search/kiwis
-		"index.html?third" : 		"third" // #search/kiwis/p7
+		"" : 						"first",
+		"index.html" : 				"first",
+		"index.html?first" : 		"first",
+		"index.html?second" : 		"second",
+		"index.html?third" : 		"third", 
+		
+		"*path" : 'notFound'
 	},
 
-	first : function() {
-		this.current_part = '-first-';
-		
-		$('div.part').hide();
-		$('div#part_first').show();
+	first : function(e) {
+		console.log('MainRouter.first');
+		this.current_part = 'first';
 	},
 
 	second : function() {
-		this.current_part = '-second-';
-		
-		$('div.part').hide();
-		$('div#part_second').show();
+		console.log('MainRouter.second');
+		this.current_part = 'second';
 	},
 
 	third : function() {
-		this.current_part = '-third-';
-		
-		$('div.part').hide();
-		$('div#part_third').show();
+		console.log('MainRouter.third');
+		this.current_part = 'third';
+	},
+	
+	notFound : function() {		
+		console.log('MainRouter.notFound');
+		this.current_part = 'notfound';
+	},
+	
+	initialize : function() {
+		console.log('MainRouter.initialize');		
 	}
 });

@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>{{title}}</title>
+        <title>{[title]}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -34,24 +34,31 @@
         <script src="js/libs/QUnit.js"></script>
         <script src="js/libs/jasmine.js"></script>
         
+        <script src="js/langs.js"></script>
         <script src="js/routes.js"></script>
-        <script src="js/views.js"></script>
         <script src="js/models.js"></script>
+        <script src="js/views.js"></script>
         <script src="js/main.js"></script>
 
 		<nav>
-			<a data-link="/index.html?first" data-view-id="part_first" href="/">first</a> | 
-			<a data-link="/index.html?second" data-view-id="part_second" href="/">second</a> | 
-			<a data-link="/index.html?third" data-view-id="part_third" href="/">third</a>
-		</nav>
-		
-		<div class="login-page-container">
+			{{ 
+				for (var i in nav_elements) {
+					}}<a class="parts{[cur_part == nav_elements[i].type ? ' active' : '']}" data-link="{[nav_elements[i].link]}" href="">{[nav_elements[i].caption]}</a>{{
+					if (nav_elements[i] != _.last(nav_elements)) {
+						}} | {{	
+					}					
+				}
+			}}
+						
+			<span class="separator">|</span>
 			
-		</div>
-		
-		<div class="part" id="part_first">NOW SHOWING FIRST</div>
-		<div class="part" id="part_second">NOW SHOWING SECOND</div>
-		<div class="part" id="part_third">NOW SHOWING THIRD</div>
+			{{
+				for (var i in lang_elements) {
+					}}<a class="langs {[lang_elements[i].type]}{[cur_language == lang_elements[i].type ? ' active' : '']}" data-lang="{[lang_elements[i].type]}" href="">{[lang_elements[i].caption]}</a> {{
+				}
+			}} 
+			
+		</nav>
 		
 		<div id="qunit">1</div>
 

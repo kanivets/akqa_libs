@@ -1,1 +1,21 @@
 div#qunit {margin-top: 5em;}
+
+nav {margin: 1em 1em;} 
+
+nav a {
+	color: #366097;
+	text-decoration: none;
+}
+
+
+nav a:visited { color: #0D3349; }
+nav a:hover { color: #2B81AF; cursor: pointer; }
+
+nav a.active {color : #2B81AF;}
+
+nav span.separator {margin: 0 2em;}
+
+nav a.langs { padding-left : 18px; }
+nav a.langs.en { background: url("../img/flag_en.png") no-repeat; }
+nav a.langs.ru { background: url("../img/flag_ru.png") no-repeat; }
+
