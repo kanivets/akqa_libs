@@ -4,35 +4,25 @@ App.proto.routers = App.proto.routers || {};
 
 App.proto.routers.main = Backbone.Router.extend({
 
-	current_part : 'main',
+	current_part : '',
 
 	routes : {
-		"" : 						"first",
-		"index.html" : 				"first",
-		"index.html?first" : 		"first",
-		"index.html?second" : 		"second",
-		"index.html?third" : 		"third", 
+		"" : 						"process",
+		":lang" : 					"process",
+		":lang/" : 					"process",
+		":lang/:part" : 			"process",
+		":lang/:part/" : 			"process"
+	},
+
+	process : function(lang, part) {
+		App.utils.flow('MainRouter.process('+ lang + ', ' + part + ')');
 		
-		"*path" : 'notFound'
+		App.langs.SetCurrentLanguage(lang);		
+		if (part) this.current_part = part;
 	},
 
-	first : function(e) {
-		App.utils.flow('MainRouter.first');
-		this.current_part = 'first';
-	},
-
-	second : function() {
-		App.utils.flow('MainRouter.second');
-		this.current_part = 'second';
-	},
-
-	third : function() {
-		App.utils.flow('MainRouter.third');
-		this.current_part = 'third';
-	},
-	
 	notFound : function() {		
-		App.utils.flow('MainRouter.notFound');
+		App.utils.log('MainRouter.notFound');
 		this.current_part = 'notfound';
 	},
 	
@@ -43,6 +33,22 @@ App.proto.routers.main = Backbone.Router.extend({
 	
 	initialize : function() {
 		App.utils.flow('MainRouter.initialize');		
-		_.bindAll(this, 'GetCurrentPart');
+		_.bindAll(this, 'GetCurrentPart', 'NavigateTo');
+	},
+	
+	BuildLink : function(lang, part) {
+		App.utils.flow('MainRouter.BuildLink(' + lang + ', ' + part + ')');
+		
+		if (!lang) lang = App.langs.GetCurrentLanguage();
+		if (!part) part = this.current_part;
+		
+		return '/' + lang + '/' + part;
+	},
+	
+	NavigateTo : function (link) {
+		App.utils.log('MainRouter.NavigateTo(\'' + link + '\')');
+		//link = link.replace('#', '');
+		//App.utils.debug(link);
+		this.navigate(link, {trigger: true});
 	}
 });

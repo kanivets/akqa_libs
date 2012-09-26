@@ -1,6 +1,6 @@
 div#qunit {margin-top: 5em;}
 
-body > section {
+body > .part {
 	display: none;
 	border : 1px solid #2B81AF;
 }
@@ -24,3 +24,4 @@ nav span.separator {margin: 0 2em;}
 nav a.langs { padding-left : 18px; }
 nav a.langs.en { background: url("../img/flag_en.png") no-repeat; }
 nav a.langs.ru { background: url("../img/flag_ru.png") no-repeat; }
+nav a.langs.es { background: url("../img/flag_es.png") no-repeat; }

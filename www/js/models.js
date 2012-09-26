@@ -7,13 +7,14 @@ App.proto.models.title = Backbone.Model.extend({
 
 	GetPageTitle : function() {
 		App.utils.flow(this.name + '.GetPageTitle');
-		return App.langs.Get('title_' + App.router.current_part);
+		var part = App.router.current_part;
+		return App.langs.Get('title_' + (part == '' ? 'main' : part));
 	},
 	
 	initialize : function() {		
 		App.utils.flow(this.name + '.initialize');	
 		_.bindAll(this, 'GetPageTitle');				
-	},	
+	}	
 }); 
 
 App.proto.models.nav = Backbone.Model.extend({
@@ -22,18 +23,20 @@ App.proto.models.nav = Backbone.Model.extend({
 	GetNavElements : function() {
 		App.utils.flow(this.name + '.GetNavElements');
 		return [
-			{ type: 'first', link: 'index.html?first', caption: App.langs.Get('nav_caption_first') },
-			{ type: 'second', link: 'index.html?second', caption: App.langs.Get('nav_caption_second') },
-			{ type: 'third', link: 'index.html?third', caption: App.langs.Get('nav_caption_third') }
+			{ type: 'first', link: App.router.BuildLink(null, 'first'), caption: App.langs.Get('nav_caption_first') },
+			{ type: 'second', link: App.router.BuildLink(null, 'second'), caption: App.langs.Get('nav_caption_second') },
+			{ type: 'third', link: App.router.BuildLink(null, 'third'), caption: App.langs.Get('nav_caption_third') }
 		];
 	},
 	
 	GetLanguages : function() {
 		App.utils.flow(this.name + '.GetLanguages');
-		return [
-			{ type: 'en', caption: App.langs.Get('nav_langs_en') },
-			{ type: 'ru', caption: App.langs.Get('nav_langs_ru') }
-		];
+		var aRet = [];
+		var aLangs = App.langs.GetAvailableLanguages();
+		for (var i in aLangs)
+			aRet.push({type: aLangs[i], link: App.router.BuildLink(aLangs[i], null), caption: App.langs.Get('nav_langs_' + aLangs[i])})
+		
+		return aRet;
 	},
 	
 	GetCurrentPart : function() {
@@ -49,7 +52,7 @@ App.proto.models.nav = Backbone.Model.extend({
 	initialize : function() {		
 		App.utils.flow('HeadModel.initialize');
 		_.bindAll(this, 'GetNavElements', 'GetLanguages', 'GetCurrentPart', 'GetCurrentLanguage');			
-	},	
+	}	
 }); 
 
 App.proto.models.part = Backbone.Model.extend({
@@ -72,5 +75,5 @@ App.proto.models.part = Backbone.Model.extend({
 	initialize : function() {		
 		App.utils.flow(this.name + '.initialize');
 		_.bindAll(this, 'GetText', 'IsVisible');			
-	},	
+	}	
 }); 

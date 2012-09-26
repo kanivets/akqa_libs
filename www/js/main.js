@@ -1,3 +1,4 @@
+
 $(document).ready(function(){	
 	_.templateSettings = {
 		interpolate : /\{\[(.+?)\]\}/g,
@@ -12,12 +13,12 @@ $(document).ready(function(){
 	
 	App.utils = {};
 	
-	App.utils.flow = function(x) {console.log(x);};
+	App.utils.flow = function(x) {return;console.log(x);};
 	App.utils.log = function(x) {console.log(x);};
 	App.utils.debug = function(x) {console.info(x);};
 	
 	App.utils.flow('MainController: begin');
-	
+
 	_.extend(App, Backbone.Events);
 	_.extend(App.langs, Backbone.Events);	
 		

@@ -1,5 +1,8 @@
 var Languator = {
+	aAvailableLangs : {en : 'en', ru: 'ru'},
+	
 	aLangs : {
+		title_main : { en : 'First', ru : 'Первая' },
 		title_first : { en : 'First', ru : 'Первая' },
 		title_second : { en : 'Second', ru : 'Вторая'},
 		title_third : { en : 'Third', ru : 'Третья'},
@@ -11,6 +14,7 @@ var Languator = {
 		
 		nav_langs_en : {en : 'EN', ru : 'EN'},
 		nav_langs_ru : {en : 'RU', ru : 'RU'},
+		//nav_langs_es : {en : 'ES', ru : 'ES'},
 		
 		part_text_first : {en : 'NOW SHOWING FIRST', ru : 'СЕЙЧАС ОТОБРАЖАЕТСЯ ПЕРВАЯ' },
 		part_text_second : {en : 'NOW SHOWING SECOND', ru : 'СЕЙЧАС ОТОБРАЖАЕТСЯ ВТОРАЯ' },
@@ -18,15 +22,19 @@ var Languator = {
 	},
 	
 	sCurrentLanguage : 'en',
-		
+	
+	GetAvailableLanguages : function () {
+		return this.aAvailableLangs;	
+	},
+	
 	GetCurrentLanguage : function () {
 		App.utils.flow('Languator.GetCurrentLanguage');
 		return this.sCurrentLanguage;	
 	},
 	
 	SetCurrentLanguage : function (to) {
-		if (this.sCurrentLanguage == to) return;
-		App.utils.flow('Languator.SetCurrentLanguage');
+		if (!to || (this.sCurrentLanguage == to) || !this.aAvailableLangs[to]) return;
+		App.utils.flow('Languator.SetCurrentLanguage('+ to +')');
 		
 		this.sCurrentLanguage = to;
 		

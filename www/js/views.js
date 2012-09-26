@@ -4,12 +4,13 @@ App.proto.views = App.proto.views || {};
 
 App.proto.views.title = Backbone.View.extend({
 	name : 'TitleView',
-	templateCompiled : null,
+	//templateCompiled : null,
 			
 	render : function() {
 		App.utils.flow(this.name + '.render');
-		var t = this.templateCompiled({title: this.model.GetPageTitle()});
-		document.title = t;	//IE BUG: cannot change access to head tags, http://bugs.jquery.com/ticket/5881
+		//var t = this.templateCompiled({title: this.model.GetPageTitle()});
+		//document.title = t;	//IE BUG: cannot change access to head tags, http://bugs.jquery.com/ticket/5881
+		document.title = this.model.GetPageTitle();
 		return this;
 	},	
 	
@@ -18,9 +19,11 @@ App.proto.views.title = Backbone.View.extend({
       	_.bindAll(this, 'render'); // every function that uses 'this' as the current object should be in here
       	
 		App.on('language_changed', this.render);
-		App.on('page_changed', this.render);
+		
+		App.router.on('all', this.render);	
+		
 		App.on('page_loaded', this.render);
-		this.templateCompiled = _.template(this.$el.html());		
+		//this.templateCompiled = _.template(this.$el.html());
 	}
 });
 
@@ -30,7 +33,7 @@ App.proto.views.nav = Backbone.View.extend({
 			
 	events : {
 		'click a.parts' : 'ChangePart',
-		'click a.langs' : 'ChangeLanguage'	
+		'click a.langs' : 'ChangeLanguage'
 	},	
 			
 	render : function() {
@@ -54,15 +57,15 @@ App.proto.views.nav = Backbone.View.extend({
 	},
 	
 	ChangeLanguage : function(e) {
-		App.utils.flow(this.name + '.ChangeLanguage');	
+		App.utils.log(this.name + '.ChangeLanguage');	
 		e.preventDefault();
-		App.langs.SetCurrentLanguage(e.target.getAttribute('data-lang'));	
+		App.router.NavigateTo(e.target.getAttribute('data-link'));	
 	},
 	
 	ChangePart : function(e) {
 		App.utils.flow(this.name + '.ChangePart');	
 		e.preventDefault();
-		App.router.navigate(e.target.getAttribute('data-link'), {trigger: true});	
+		App.router.NavigateTo(e.target.getAttribute('data-link'));	
 	}
 });
 
