@@ -7,15 +7,16 @@ App.proto.views.title = Backbone.View.extend({
 	templateCompiled : null,
 			
 	render : function() {
-		console.log(this.name + '.render');
+		App.utils.flow(this.name + '.render');
 		var t = this.templateCompiled({title: this.model.GetPageTitle()});
 		document.title = t;	//IE BUG: cannot change access to head tags, http://bugs.jquery.com/ticket/5881
 		return this;
 	},	
 	
 	initialize : function() {
-		console.log(this.name + '.initialize');
+		App.utils.flow(this.name + '.initialize');
       	_.bindAll(this, 'render'); // every function that uses 'this' as the current object should be in here
+      	
 		App.on('language_changed', this.render);
 		App.on('page_changed', this.render);
 		App.on('page_loaded', this.render);
@@ -33,7 +34,7 @@ App.proto.views.nav = Backbone.View.extend({
 	},	
 			
 	render : function() {
-		console.log(this.name + '.render');
+		App.utils.flow(this.name + '.render');
 				
 		var t = this.templateCompiled({nav_elements: this.model.GetNavElements(), lang_elements: this.model.GetLanguages(), cur_language: this.model.GetCurrentLanguage(), cur_part : this.model.GetCurrentPart()});
 		this.$el.html(t);	//IE BUG: cannot change access to head tags, http://bugs.jquery.com/ticket/5881
@@ -41,76 +42,98 @@ App.proto.views.nav = Backbone.View.extend({
 	},	
 	
 	initialize : function() {
-		console.log(this.name + '.initialize');
+		App.utils.flow(this.name + '.initialize');
       	_.bindAll(this, 'render', 'ChangeLanguage'); // every function that uses 'this' as the current object should be in here
 		
 		App.on('language_changed', this.render);
-		App.on('page_changed', this.render);
 		App.on('page_loaded', this.render);
+		
+		App.router.on('all', this.render);		
 		
 		this.templateCompiled = _.template(this.$el.html());		
 	},
 	
 	ChangeLanguage : function(e) {
-		console.log(this.name + '.ChangeLanguage');	
+		App.utils.flow(this.name + '.ChangeLanguage');	
 		e.preventDefault();
 		App.langs.SetCurrentLanguage(e.target.getAttribute('data-lang'));	
 	},
 	
 	ChangePart : function(e) {
-		console.log(this.name + '.ChangePart');	
+		App.utils.flow(this.name + '.ChangePart');	
 		e.preventDefault();
 		App.router.navigate(e.target.getAttribute('data-link'), {trigger: true});	
 	}
 });
 
 
-/*
-var PartView = Backbone.View.extend({
+App.proto.views.part = Backbone.View.extend({
+	name : 'PartView',
 	templateCompiled : null,
-	bIsActive : true,
+	bIsVisible : false,
 	
-	events : {
-		'language:changed' : 'render',
-		'click' : 'render'
+	_Show : function() {	//internal use only - contains jquery level of element hiding  
+		this._bIsVisible = true;			
+		this.$el.fadeIn('slow');		
 	},
 	
-	Show : function() {
-		if (this.bIsActive) return;
-		console.log('PartView.Show');	
+	_Hide : function() {	//internal use only - contains jquery level of element hiding	  
+		this._bIsVisible = false;		
+		this.$el.hide();		
+	},
 		
-		this.$el.show();
-		this.bIsActive = true;
+	Show : function() {		//common use - wrapper of element visibility control
+		this.SetVisibility(true);
 	},
 
-	Hide : function() {
-		if (!this.bIsActive) return;
-		console.log('PartView.Hide');		
-		
-		this.$el.hide();
-		this.bIsActive = false;
+	Hide : function() {		//common use - wrapper of element visibility control
+		this.SetVisibility(false);
 	},
   
-	render : function() {		
-		if (!this.bIsActive) return;
-		console.log('PartView.render');	
+  	SetVisibility : function(visible) {		//common use - uses internal _Show/_Hide methods to control visibility of element. also set internal bool flags of visibility to prevent repeating of re-show/re-hide
+  		if (visible && !this._bIsVisible)
+  		{
+			App.utils.flow(this.name + '.SetVisibility(true)');			
+			this._Show();
+			return;
+  		}		
+  		
+  		if (!visible && this._bIsVisible)
+  		{  			
+			App.utils.flow(this.name + '.SetVisibility(false)');	
+			this._Hide();
+			return;
+  		}
+  	},
+  
+	render : function() {	
+		var bIsCurrentVisibility = this.model.IsVisible();		
+		this.SetVisibility(bIsCurrentVisibility);
 		
-		var t = this.templateCompiled({text: App.langs.Get('part_text_' + App.router.current_part)});	
-		this.$el.html(t);	
+		if (!bIsCurrentVisibility) return;
+		
+		App.utils.flow(this.name + '.render');
+		
+		this.$el.html(this.templateCompiled({text: this.model.GetText()}));
 	},
 	
-	initialize : function(options) {
-		console.log('PartView.initialize');
-		var that = this;
+	OnPageLoaded : function() {
+		App.utils.flow(this.name + '.OnPageLoaded');
 		
-		if (options && options.visible) {
-			this.$el.show();
-			this.bIsActive = true;		
-		} else {
-			this.$el.hide();
-			this.bIsActive = false;	
-		}
+		this.render();
+	},
+	
+	initialize : function() {
+		App.utils.flow(this.name + '.initialize');		
+		_.bindAll(this, 'Show', 'Hide', 'SetVisibility', 'OnPageLoaded', 'render');
+		
+		this.setElement('#' + this.model.get('part_name'));
+		
+		App.on('language_changed', this.render);
+		App.on('page_loaded', this.OnPageLoaded);
 		
 		this.templateCompiled = _.template(this.$el.html());
+		
+		App.router.on('all', this.render);						
 	}
-});*/
+});

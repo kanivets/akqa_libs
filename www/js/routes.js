@@ -17,26 +17,32 @@ App.proto.routers.main = Backbone.Router.extend({
 	},
 
 	first : function(e) {
-		console.log('MainRouter.first');
+		App.utils.flow('MainRouter.first');
 		this.current_part = 'first';
 	},
 
 	second : function() {
-		console.log('MainRouter.second');
+		App.utils.flow('MainRouter.second');
 		this.current_part = 'second';
 	},
 
 	third : function() {
-		console.log('MainRouter.third');
+		App.utils.flow('MainRouter.third');
 		this.current_part = 'third';
 	},
 	
 	notFound : function() {		
-		console.log('MainRouter.notFound');
+		App.utils.flow('MainRouter.notFound');
 		this.current_part = 'notfound';
 	},
 	
+	GetCurrentPart : function() {
+		App.utils.flow('MainRouter.GetCurrentPart');	
+		return this.current_part;
+	},
+	
 	initialize : function() {
-		console.log('MainRouter.initialize');		
+		App.utils.flow('MainRouter.initialize');		
+		_.bindAll(this, 'GetCurrentPart');
 	}
 });

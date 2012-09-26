@@ -20,20 +20,21 @@ var Languator = {
 	sCurrentLanguage : 'en',
 		
 	GetCurrentLanguage : function () {
+		App.utils.flow('Languator.GetCurrentLanguage');
 		return this.sCurrentLanguage;	
 	},
 	
 	SetCurrentLanguage : function (to) {
 		if (this.sCurrentLanguage == to) return;
+		App.utils.flow('Languator.SetCurrentLanguage');
 		
-		console.log('Languator.SetCurrentLanguage', to);
 		this.sCurrentLanguage = to;
 		
 		App.trigger('language_changed', to);	
 	},
 	 
 	Get : function(key) {
-		console.log('Languator.Get(' + key + ')');
+		App.utils.flow('Languator.Get(' + key + ')');
 		return this.aLangs[key][this.sCurrentLanguage];
 	}
 };

@@ -6,12 +6,13 @@ App.proto.models.title = Backbone.Model.extend({
 	name : 'TitleModel',
 
 	GetPageTitle : function() {
-		console.log('HeadModel.GetPageTitle');	
+		App.utils.flow(this.name + '.GetPageTitle');
 		return App.langs.Get('title_' + App.router.current_part);
 	},
 	
 	initialize : function() {		
-		console.log('HeadModel.initialize');			
+		App.utils.flow(this.name + '.initialize');	
+		_.bindAll(this, 'GetPageTitle');				
 	},	
 }); 
 
@@ -19,7 +20,7 @@ App.proto.models.nav = Backbone.Model.extend({
 	name : 'NavModel',
 
 	GetNavElements : function() {
-		console.log(this.name + '.GetNavElements');
+		App.utils.flow(this.name + '.GetNavElements');
 		return [
 			{ type: 'first', link: 'index.html?first', caption: App.langs.Get('nav_caption_first') },
 			{ type: 'second', link: 'index.html?second', caption: App.langs.Get('nav_caption_second') },
@@ -28,7 +29,7 @@ App.proto.models.nav = Backbone.Model.extend({
 	},
 	
 	GetLanguages : function() {
-		console.log(this.name + '.GetLanguages');
+		App.utils.flow(this.name + '.GetLanguages');
 		return [
 			{ type: 'en', caption: App.langs.Get('nav_langs_en') },
 			{ type: 'ru', caption: App.langs.Get('nav_langs_ru') }
@@ -36,17 +37,40 @@ App.proto.models.nav = Backbone.Model.extend({
 	},
 	
 	GetCurrentPart : function() {
-		console.log(this.name + '.GetCurrentPart');
+		App.utils.flow(this.name + '.GetCurrentPart');
 		return App.router.current_part;
 	},
 	
 	GetCurrentLanguage : function() {
-		console.log(this.name + '.GetCurrentLanguage');
+		App.utils.flow(this.name + '.GetCurrentLanguage');
 		return App.langs.GetCurrentLanguage();
 	},
 		
 	initialize : function() {		
-		console.log('HeadModel.initialize');
-		_.bindAll(this, 'GetNavElements', 'GetLanguages', 'GetCurrentPart', 'GetCurrentLanguage')			
+		App.utils.flow('HeadModel.initialize');
+		_.bindAll(this, 'GetNavElements', 'GetLanguages', 'GetCurrentPart', 'GetCurrentLanguage');			
+	},	
+}); 
+
+App.proto.models.part = Backbone.Model.extend({
+	name : 'PartModel',
+
+	defaults : {
+		part_name : ''	
+	},	
+
+	GetText : function() {
+		App.utils.flow(this.name + '.GetText');
+		return App.langs.Get('part_text_' + this.get('part_name'));
+	},
+	
+	IsVisible : function() {
+		App.utils.flow(this.name + '.IsVisible, ' + this.get('part_name') + '==' + App.router.GetCurrentPart() + '(' + (this.get('part_name') == App.router.GetCurrentPart()) + ')');
+		return this.get('part_name') == App.router.GetCurrentPart();			
+	},
+	
+	initialize : function() {		
+		App.utils.flow(this.name + '.initialize');
+		_.bindAll(this, 'GetText', 'IsVisible');			
 	},	
 }); 
