@@ -129,20 +129,22 @@ $(document).ready(function(){
 		expect(9 );
 	
 		App.router.current_part = 'test';
+		App.router.default_part = 'default';
+		
 		App.router.process();
-		equal(App.router.current_part, 'test', 'Passing without arguments will not change current_part');
+		equal(App.router.current_part, App.router.default_part, 'Passing without arguments will change current_part to default');
 		
 		App.router.process(null);
-		equal(App.router.current_part, 'test', 'Passing only with 1 argument will not change current_part');
+		equal(App.router.current_part, App.router.default_part, 'Passing only with 1 argument will change current_part to default');
 		
 		App.router.process('ru');
-		equal(App.router.current_part, 'test', 'Passing null and undefined as arguments will not change current_part');
+		equal(App.router.current_part, App.router.default_part, 'Passing null and undefined as arguments will change current_part to default');
 		
 		App.router.process(null, undefined);
-		equal(App.router.current_part, 'test', 'Passing null and undefined as arguments will not change current_part');
+		equal(App.router.current_part, App.router.default_part, 'Passing null and undefined as arguments will change current_part to default');
 		
 		App.router.process('ru', null);
-		equal(App.router.current_part, 'test', 'Passing null as second arguments will not change current_part');
+		equal(App.router.current_part, App.router.default_part, 'Passing null as second arguments will change current_part to default');
 		
 		App.router.process(null, 'test2');
 		equal(App.router.current_part, 'test2', 'Passing \'test2\' as second argument will change current_part to it');
@@ -153,11 +155,11 @@ $(document).ready(function(){
 				
 		App.router.current_part = 'test';
 		App.router.process('ru', function() {});
-		equal(App.router.current_part, 'test', 'Passing good first and bad second (function) arguments will not change current_part to it');
+		equal(App.router.current_part, App.router.default_part, 'Passing good first and bad second (function) arguments will change current_part to default');
 		
 		App.router.current_part = 'test';
 		App.router.process('ru', {x: 'some'});
-		equal(App.router.current_part, 'test', 'Passing good first and bad second (object) arguments will not change current_part to it');
+		equal(App.router.current_part, App.router.default_part, 'Passing good first and bad second (object) arguments will change current_part to default');
 	});
 	
 	test('Router \'notfound\' functionality check', function() {

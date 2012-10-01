@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>AKQA Game Center</title>
+        <title>- Be Brainy - </title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -39,50 +39,66 @@
         <script src="/js/views.js"></script>
         
         
-        <!--<script src="/js/main.js"></script>-->
+        <script src="/js/main.js"></script>
         
-        <!--<script src="/js/libs/jasmine.js"></script>-->  
+        <!--
+        
         <script src="/js/libs/QUnit.js"></script>
        	<script src="/js/_unittests/unittests_common.js"></script>
-        <script src="/js/_unittests/unittests_bebrainy.js"></script>  -->      
+        <script src="/js/_unittests/unittests_bebrainy.js"></script>   
         
+        -->
         
+        <!--<script src="/js/libs/jasmine.js"></script>-->     
         
-
-		<nav>
-			{{ 
-				for (var i in nav_elements) {
-				}}<a class="parts{[cur_part == nav_elements[i].type ? ' active' : '']}" data-link="{[nav_elements[i].link]}" href="{[nav_elements[i].link]}">{[nav_elements[i].caption]}</a>{{
-					if (nav_elements[i] != _.last(nav_elements)) {
-						}} | {{	
-					}					
-				}
-			}}
+        <header>
+			<nav>
+				{{ 
+					for (var i in nav_elements) {
+					}}<a class="parts{[cur_part == nav_elements[i].type ? ' active' : '']}" data-link="{[nav_elements[i].link]}" href="{[nav_elements[i].link]}">{[nav_elements[i].caption]}</a>{{
+						if (nav_elements[i] != _.last(nav_elements)) {
+							}} | {{	
+						}					
+					}
+				}}
+							
+				<span class="separator">|</span>
+				
+				{{
+					for (var i in lang_elements) {
+						}}<a class="langs {[lang_elements[i].type]}{[cur_language == lang_elements[i].type ? ' active' : '']}" data-link="{[lang_elements[i].link]}" href="{[lang_elements[i].link]}">{[lang_elements[i].caption]}</a> {{
+					}
+				}} 
+				
+				{{
+					if (isLogined) {
+						}} Hello, {[login_name]}! {{
+					} else {
+						}} <button>LOGIN</button> | <a class="parts" data-link="{[register_link]}" href="{[register_link]}">{[register_caption]}</a> {{	
+					}	
+								
+				}}			
+			</nav>
+        </header>
+        
+		<section class="hidden" id="part_register">
+			<div class="background">
+				<div class="popup">
+					<h1>Register</h1>
+					
+					<form id="register" method="POST">						
+						<p><label for="register_name">Name</label><input type="text" id="register_name" name="register_name" value="" tabindex="1"/></p>
+						<p><label for="register_login">Login</label><input type="text" id="register_login" name="register_login" value="" tabindex="2"/></p>
+						<p><label for="register_password">Password</label><input type="text" id="register_password" name="register_password" value="" tabindex="3"/></p>
+						<p><label for="register_password2">Password(again)</label><input type="text" id="register_password2" name="register_password2" value="" tabindex="4"/></p>
+						<p><label for="register_email">Email</label><input type="text" id="register_email" name="register_email" value="" tabindex="5"/></p>
+						<p><label for="register_subscribe">Subscribe</label><input type="checkbox" id="register_subscribe" name="register_subscribe" checked="checked" tabindex="7"/></p>
+						<p><label for="register_agree">I agree with rules</label><input type="checkbox" id="register_agree" name="register_agree" tabindex="8"/></p>		
 						
-			<span class="separator">|</span>
-			
-			{{
-				for (var i in lang_elements) {
-					}}<a class="langs {[lang_elements[i].type]}{[cur_language == lang_elements[i].type ? ' active' : '']}" data-link="{[lang_elements[i].link]}" href="{[lang_elements[i].link]}">{[lang_elements[i].caption]}</a> {{
-				}
-			}} 
-			
-			{{
-				if ()				
-			}}
-			
-		</nav>
-
-		<section class="part" id="first">	
-				<canvas id="worldmap" height="300" width="736"></canvas>
-		</section>
-		
-		<section class="part" id="second">
-			{[text]}	
-		</section>
-		
-		<section class="part" id="third">
-			{[text]}
+						<p><button id="register_close">CLOSE</button> ||| <button id="register_clear">CLEAR</button> | <button id="register_submit">REGISTER</button></p>
+					</form>					
+				</div>
+			</div>
 		</section>
 		
 		<div id="qunit"> </div>
