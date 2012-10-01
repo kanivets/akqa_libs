@@ -31,14 +31,23 @@
         <script src="/js/libs/backbone.js"></script>
         <script src="/js/libs/jquery.validate.js"></script>
         <script src="/js/libs/raphael.js"></script>
-        <script src="/js/libs/QUnit.js"></script>
-        <script src="/js/libs/jasmine.js"></script>
+        <script src="/js/libs/worldmap.js"></script>
         
         <script src="/js/langs.js"></script>
         <script src="/js/routes.js"></script>
         <script src="/js/models.js"></script>
         <script src="/js/views.js"></script>
-        <script src="/js/main.js"></script>
+        
+        
+        <!--<script src="/js/main.js"></script>-->
+        
+        <!--<script src="/js/libs/jasmine.js"></script>-->  
+        <script src="/js/libs/QUnit.js"></script>
+       	<script src="/js/_unittests/unittests_common.js"></script>
+        <script src="/js/_unittests/unittests_bebrainy.js"></script>  -->      
+        
+        
+        
 
 		<nav>
 			{{ 
@@ -58,9 +67,14 @@
 				}
 			}} 
 			
+			{{
+				if ()				
+			}}
+			
 		</nav>
-		<section class="part" id="first">
-			{[text]}	
+
+		<section class="part" id="first">	
+				<canvas id="worldmap" height="300" width="736"></canvas>
 		</section>
 		
 		<section class="part" id="second">
@@ -68,9 +82,9 @@
 		</section>
 		
 		<section class="part" id="third">
-			{[text]}	
+			{[text]}
 		</section>
 		
-		<div id="qunit">1</div>
+		<div id="qunit"> </div>
     </body>
 </html>

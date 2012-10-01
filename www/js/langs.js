@@ -2,23 +2,24 @@ var Languator = {
 	aAvailableLangs : {en : 'en', ru: 'ru'},
 	
 	aLangs : {
-		title_main : { en : 'First', ru : 'Первая' },
-		title_first : { en : 'First', ru : 'Первая' },
-		title_second : { en : 'Second', ru : 'Вторая'},
-		title_third : { en : 'Third', ru : 'Третья'},
+		
+		title_main : { en : 'Games', ru : 'Игры' },
+		title_games : { en : 'Games', ru : 'Игры' },
+		title_friends : { en : 'Friends', ru : 'Друзья'},
+		title_statistics : { en : 'Statistics', ru : 'Статистика'},
 		title_notfound : { en : 'Page is not found!', ru : 'Страница не найдена'},
+
 		
-		nav_caption_first : {en : 'First', ru : 'Первая'},
-		nav_caption_second : {en : 'Second', ru : 'Вторая'},
-		nav_caption_third : {en : 'Third', ru : 'Третья'},
+		header_caption_games : {en : 'GAMES', ru : 'ИГРЫ'},
+		header_caption_friends : {en : 'FRIENDS', ru : 'ДРУЗЬЯ'},
+		header_caption_statistics : {en : 'STATISTICS', ru : 'СТАТИСТИКА'},
+
 		
-		nav_langs_en : {en : 'EN', ru : 'EN'},
-		nav_langs_ru : {en : 'RU', ru : 'RU'},
-		//nav_langs_es : {en : 'ES', ru : 'ES'},
+		header_langs_en : {en : 'EN', ru : 'EN'},
+		header_langs_ru : {en : 'RU', ru : 'RU'},
+
 		
-		part_text_first : {en : 'NOW SHOWING FIRST', ru : 'СЕЙЧАС ОТОБРАЖАЕТСЯ ПЕРВАЯ' },
-		part_text_second : {en : 'NOW SHOWING SECOND', ru : 'СЕЙЧАС ОТОБРАЖАЕТСЯ ВТОРАЯ' },
-		part_text_third : {en : 'NOW SHOWING THIRD', ru : 'СЕЙЧАС ОТОБРАЖАЕТСЯ ТРЕТЬЯ' }
+		unknown : '...'
 	},
 	
 	sCurrentLanguage : 'en',
@@ -33,16 +34,23 @@ var Languator = {
 	},
 	
 	SetCurrentLanguage : function (to) {
-		if (!to || (this.sCurrentLanguage == to) || !this.aAvailableLangs[to]) return;
+		if (!to || !this.aAvailableLangs[to] || typeof(to) != 'string') return false;
+		if (this.sCurrentLanguage == to) return true;
+		
 		App.utils.flow('Languator.SetCurrentLanguage('+ to +')');
 		
 		this.sCurrentLanguage = to;
 		
-		App.trigger('language_changed', to);	
+		this.trigger('language_changed', to);	
+		return true;
 	},
 	 
 	Get : function(key) {
 		App.utils.flow('Languator.Get(' + key + ')');
+		
+		if (this.aLangs[key] === undefined) return this.aLangs.unknown;		
+		if (this.aLangs[key][this.sCurrentLanguage] === undefined) return this.aLangs.unknown;
+		
 		return this.aLangs[key][this.sCurrentLanguage];
 	}
 };

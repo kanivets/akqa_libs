@@ -8,8 +8,6 @@ App.proto.views.title = Backbone.View.extend({
 			
 	render : function() {
 		App.utils.flow(this.name + '.render');
-		//var t = this.templateCompiled({title: this.model.GetPageTitle()});
-		//document.title = t;	//IE BUG: cannot change access to head tags, http://bugs.jquery.com/ticket/5881
 		document.title = this.model.GetPageTitle();
 		return this;
 	},	
@@ -18,17 +16,14 @@ App.proto.views.title = Backbone.View.extend({
 		App.utils.flow(this.name + '.initialize');
       	_.bindAll(this, 'render'); // every function that uses 'this' as the current object should be in here
       	
-		App.on('language_changed', this.render);
-		
-		App.router.on('all', this.render);	
-		
+		App.langs.on('language_changed', this.render);		
+		App.router.on('all', this.render);			
 		App.on('page_loaded', this.render);
-		//this.templateCompiled = _.template(this.$el.html());
 	}
 });
 
-App.proto.views.nav = Backbone.View.extend({
-	name : 'NavView',
+App.proto.views.header = Backbone.View.extend({
+	name : 'HeaderView',
 	templateCompiled : null,
 			
 	events : {
@@ -39,8 +34,15 @@ App.proto.views.nav = Backbone.View.extend({
 	render : function() {
 		App.utils.flow(this.name + '.render');
 				
-		var t = this.templateCompiled({nav_elements: this.model.GetNavElements(), lang_elements: this.model.GetLanguages(), cur_language: this.model.GetCurrentLanguage(), cur_part : this.model.GetCurrentPart()});
-		this.$el.html(t);	//IE BUG: cannot change access to head tags, http://bugs.jquery.com/ticket/5881
+		var t = this.templateCompiled({
+			nav_elements: this.model.GetNavElements(), 
+			lang_elements: this.model.GetLanguages(), 
+			cur_language: this.model.GetCurrentLanguage(), 
+			cur_part : this.model.GetCurrentPart(),
+			isLogined : this.model.IsLogined(),
+			login_name : this.model.GetLoginName()
+			});
+		this.$el.html(t);
 		return this;
 	},	
 	
@@ -48,7 +50,7 @@ App.proto.views.nav = Backbone.View.extend({
 		App.utils.flow(this.name + '.initialize');
       	_.bindAll(this, 'render', 'ChangeLanguage'); // every function that uses 'this' as the current object should be in here
 		
-		App.on('language_changed', this.render);
+		App.langs.on('language_changed', this.render);
 		App.on('page_loaded', this.render);
 		
 		App.router.on('all', this.render);		
@@ -69,11 +71,12 @@ App.proto.views.nav = Backbone.View.extend({
 	}
 });
 
-
+/*
 App.proto.views.part = Backbone.View.extend({
 	name : 'PartView',
 	templateCompiled : null,
 	bIsVisible : false,
+	
 	
 	_Show : function() {	//internal use only - contains jquery level of element hiding  
 		this._bIsVisible = true;			
@@ -132,11 +135,12 @@ App.proto.views.part = Backbone.View.extend({
 		
 		this.setElement('#' + this.model.get('part_name'));
 		
-		App.on('language_changed', this.render);
+		App.langs.on('language_changed', this.render);
 		App.on('page_loaded', this.OnPageLoaded);
 		
 		this.templateCompiled = _.template(this.$el.html());
 		
 		App.router.on('all', this.render);						
-	}
+	} 
 });
+*/

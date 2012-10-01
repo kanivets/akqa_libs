@@ -1,7 +1,7 @@
 div#qunit {margin-top: 5em;}
 
 body > .part {
-	display: none;
+	display: block;
 	border : 1px solid #2B81AF;
 }
 

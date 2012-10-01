@@ -5,10 +5,16 @@ App.proto.models = App.proto.models || {};
 App.proto.models.title = Backbone.Model.extend({
 	name : 'TitleModel',
 
+	defaults : {		
+		lang_prefix : 'title'		
+	},
+
+
 	GetPageTitle : function() {
 		App.utils.flow(this.name + '.GetPageTitle');
 		var part = App.router.current_part;
-		return App.langs.Get('title_' + (part == '' ? 'main' : part));
+				
+		return App.langs.Get(this.get('lang_prefix') + '_' + (part == '' ? 'main' : part));
 	},
 	
 	initialize : function() {		
@@ -17,15 +23,18 @@ App.proto.models.title = Backbone.Model.extend({
 	}	
 }); 
 
-App.proto.models.nav = Backbone.Model.extend({
-	name : 'NavModel',
+App.proto.models.header = Backbone.Model.extend({
+	name : 'HeaderModel',
+
+	_bIsLogined : false,
+	_sLoginName : '',
 
 	GetNavElements : function() {
 		App.utils.flow(this.name + '.GetNavElements');
 		return [
-			{ type: 'first', link: App.router.BuildLink(null, 'first'), caption: App.langs.Get('nav_caption_first') },
-			{ type: 'second', link: App.router.BuildLink(null, 'second'), caption: App.langs.Get('nav_caption_second') },
-			{ type: 'third', link: App.router.BuildLink(null, 'third'), caption: App.langs.Get('nav_caption_third') }
+			{ type: 'games', link: App.router.BuildLink(null, 'games'), caption: App.langs.Get('header_caption_games') },
+			{ type: 'friends', link: App.router.BuildLink(null, 'friends'), caption: App.langs.Get('header_caption_friends') },
+			{ type: 'statistics', link: App.router.BuildLink(null, 'statistics'), caption: App.langs.Get('header_caption_statistics') }
 		];
 	},
 	
@@ -34,7 +43,7 @@ App.proto.models.nav = Backbone.Model.extend({
 		var aRet = [];
 		var aLangs = App.langs.GetAvailableLanguages();
 		for (var i in aLangs)
-			aRet.push({type: aLangs[i], link: App.router.BuildLink(aLangs[i], null), caption: App.langs.Get('nav_langs_' + aLangs[i])})
+			aRet.push({type: aLangs[i], link: App.router.BuildLink(aLangs[i], null), caption: App.langs.Get('header_langs_' + aLangs[i])})
 		
 		return aRet;
 	},
@@ -48,13 +57,21 @@ App.proto.models.nav = Backbone.Model.extend({
 		App.utils.flow(this.name + '.GetCurrentLanguage');
 		return App.langs.GetCurrentLanguage();
 	},
-		
+	
+	IsLogined : function() {
+		return this._bIsLogined;
+	},
+
+	GetLoginName : function() {
+		return this._sLoginName;
+	},
+			
 	initialize : function() {		
 		App.utils.flow('HeadModel.initialize');
 		_.bindAll(this, 'GetNavElements', 'GetLanguages', 'GetCurrentPart', 'GetCurrentLanguage');			
 	}	
 }); 
-
+/*
 App.proto.models.part = Backbone.Model.extend({
 	name : 'PartModel',
 
@@ -77,3 +94,4 @@ App.proto.models.part = Backbone.Model.extend({
 		_.bindAll(this, 'GetText', 'IsVisible');			
 	}	
 }); 
+*/
