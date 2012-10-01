@@ -179,7 +179,7 @@ App.proto.views.register = App.proto.views._part.extend({
 	OnClear : function(e) {
 		App.utils.flow_ext(this.name + '.OnClear');
 		e.preventDefault();
-		$('input[type="text"]', $('#register')).each(function(index, element) {
+		$('input[type="text"], input[type="password"]', $('#register')).each(function(index, element) {
 			$(element).val('');	
 		});
 		

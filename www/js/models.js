@@ -122,11 +122,14 @@ App.proto.models.register = Backbone.Model.extend({
 				},
 				
 				register_password : {
-					required : true
+					required : true,	
+					minlength : 5,
+					maxlength : 16
 				},
 				
 				register_password2 : {
 					required : true,
+					equalTo : '#register_password'
 				},
 				
 				register_email : {
@@ -144,14 +147,17 @@ App.proto.models.register = Backbone.Model.extend({
 			},
 		
 			messages: {
-	     		name: {
+	     		register_name: {
 	     			required : "Please specify your name",
 	     			minlength: jQuery.format("At least {0} characters required!"),
 	     			maxlength: jQuery.format("Max {0} characters!"),
 	     		},
-	     		email: {
+	     		register_email: {
 	       			required: "We need your email address to contact you",
 	       			email: "Your email address must be in the format of name@domain.com"
+	     		},
+	     		register_password2: {
+	     			equalTo : "Passwords mismatch"
 	     		},
 	     		register_agree: {
 	       			required: "You must agree with rules to continue registration"
