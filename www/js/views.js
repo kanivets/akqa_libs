@@ -30,7 +30,7 @@ App.proto.views.header = App.proto.views._static.extend({
 	},	
 			
 	render : function() {
-		App.utils.log(this.name + '.render');
+		App.utils.flow_ext(this.name + '.render');
 		var t = this.templateCompiled({
 
 			games_link : this.model.GetLink('games'),
@@ -60,7 +60,7 @@ App.proto.views.header = App.proto.views._static.extend({
 	
 	initialize : function(args) {
       	App.proto.views._static.prototype.initialize.call(this, args);
-		App.utils.log(this.name + '.initialize');
+		App.utils.flow_ext(this.name + '.initialize');
       	_.bindAll(this, 'render', 'ChangePart', 'ChangeLanguage'); // every function that uses 'this' as the current object should be in here
 				
 		var t = this.$el.html().replace(/\&lt;\%/g, '<%').replace(/\%\&gt;/g, '%>');
