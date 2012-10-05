@@ -23,6 +23,18 @@ var Languator = {
 		header_langs_en : {en : 'EN', ru : 'EN'},
 		header_langs_ru : {en : 'RU', ru : 'RU'},
 
+		register_caption : {en : 'Register', ru : 'Регистрация'},
+		register_login : {en : 'Login', ru : 'Логин'},
+		register_name : {en : 'Name', ru : 'Имя'},
+
+		mostPlayed_girls_type : {en : "Girls'", ru : 'Девушкам'},
+		mostPlayed_girls_text : {en : "most played games", ru : 'нравится'},
+
+		mostPlayed_boys_type : {en : "Boys'", ru : 'Парням'},
+		mostPlayed_boys_text : {en : "most played games", ru : 'нравится'},
+
+		mostPlayed_age_type : {en : 'age', ru : 'возраст игроков'},
+		mostPlayed_age_text : {en : "Players'", ru : 'Средний'},
 		
 		unknown : '...'
 	},
@@ -56,7 +68,6 @@ var Languator = {
 		
 		if (this.aLangs[key] === undefined) return this.aLangs.unknown;		
 		if (this.aLangs[key][this.sCurrentLanguage] === undefined) return this.aLangs.unknown;
-		
 		return this.aLangs[key][this.sCurrentLanguage];
 	}
 };

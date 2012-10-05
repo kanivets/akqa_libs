@@ -1,36 +1,58 @@
 $(document).ready(function(){	
+	/*
 	_.templateSettings = {
 		interpolate : /\{\[(.+?)\]\}/g,
 		evaluate : /\{\{(.+?)\}\}/g 
 	};
-		
+	*/	
 	App.router = {};
 	App.views = {};
 	App.models = {};
-		
+			
 	App.langs = Languator;
-	
-	App.utils = {};
-	
-	App.utils.flow_core = function(x) {return;console.log(x);};
-	App.utils.flow_ext = function(x) {return;console.log(x);};
-	App.utils.log = function(x) {console.log(x);};
-	App.utils.debug = function(x) {console.info(x);};
 	
 	App.utils.flow_ext('MainController: begin');
 
 	_.extend(App, Backbone.Events);
 	_.extend(App.langs, Backbone.Events);	
 		
-	App.router = new App.proto.routers.main();
+	App.router = new App.proto.router();	
 	App.router.default_part = 'games';
 	Backbone.history.start({pushState : true});
-			
+		
 	App.views.title = new App.proto.views.title({el : "title", model: new App.proto.models.title()});	
 	App.views.header = new App.proto.views.header({el : "header", model: new App.proto.models.header()});
 	
-	App.views.register = new App.proto.views.register({model : new App.proto.models.register({part_name: 'register'})});
+	App.views.register = new App.proto.views.register({
+								model : new App.proto.models.register(),
+								containerID : 'container_register',
+								parts : {'signin' : true}
+							});
 	
+	App.models.gameList = new App.proto.models.gameList({
+								itemsPerPage : 9,
+								model : App.proto.models.gameIcon});
+	App.models.gameList.reset();
+	for (var i in App.data.games)
+		App.models.gameList.add(new App.proto.models.gameIcon({gameData : App.data.games[i]}), {silent: true});
+	
+	App.views.gameList = new App.proto.views.gameList({
+								model : App.models.gameList,
+								containerID : 'container_gameList', 
+								parts : {'games' : true}});	
+
+
+	App.views.horizontalStats = new App.proto.views.stats.horizontalStats({
+									containerID : 'container_horizontalStats', 
+									parts : {'games' : true}
+								});
+
+	App.views.worldMapStats = new App.proto.views.stats.worldMapStats({
+									containerID : 'container_worldMapStats', 
+									parts : {'games' : true}
+								});
+
+
 	//$('#part_register').fadeIn(2000);
 	
 	
@@ -83,6 +105,40 @@ $(document).ready(function(){
 			
 	App.langs.SetCurrentLanguage('ru');
 */
+
+	Backbone.sync = function(method, model)
+	{		
+       	App.utils.flow_ext('Backbone.sync fired');
+       	console.info(method, model);
+		switch (method) {
+			case 'read' : {
+				switch (model.name) {
+					case 'GameListCollection' : {						
+						if (!model.paginationConfig || !model.paginationConfig.ipp) return;
+						
+						var p = model.currentPage;
+						console.info()
+						
+						if ((p < 1) || (Math.ceil(App.data.games.length / model.paginationConfig.ipp) > p)) return; 	
+										
+						App.router.navigate(App.router.BuildLink(null, null) + '/p' + model.currentPage, true);
+						if (model.paginationConfig.fetchOptions && model.paginationConfig.fetchOptions.success)
+						{							
+							var aGames = [];
+							var nStart = (model.currentPage - 1) * model.paginationConfig.ipp + 1;
+							for (var i = nStart; i < nStart + model.paginationConfig.ipp; i++)
+								aGames.push(App.data.games[i]);
+										 
+							model.paginationConfig.fetchOptions.success(JSON.stringify(aGames));														
+						}	 		
+						break;
+					};
+					default : return;
+				}				
+				break;				
+			}
+		}
+	};
 
 	App.trigger('page_loaded');
 	App.utils.flow_ext('MainController: end');
