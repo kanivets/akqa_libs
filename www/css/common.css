@@ -1,8 +1,9 @@
 div#qunit {margin-top: 5em;}
 
-body > .part {
+div.clear {clear: both;}
+
+body > .hidden {
 	display: none;
-	border : 1px solid #2B81AF;
 }
 
 
@@ -14,10 +15,10 @@ nav a {
 }
 
 
-nav a:visited { color: #0D3349; }
-nav a:hover { color: #2B81AF; cursor: pointer; }
+nav a:visited { color: #366097; }
+nav a:hover { color: #4BA1CF; cursor: pointer; }
 
-nav a.active {color : #2B81AF;}
+nav a.active {color : #6BC1EF;}
 
 nav span.separator {margin: 0 2em;}
 
@@ -25,3 +26,80 @@ nav a.langs { padding-left : 18px; }
 nav a.langs.en { background: url("../img/flag_en.png") no-repeat; }
 nav a.langs.ru { background: url("../img/flag_ru.png") no-repeat; }
 nav a.langs.es { background: url("../img/flag_es.png") no-repeat; }
+
+
+/**/
+#container_register > div.background {
+	position: fixed;
+	top : 0;
+	left: 0;
+	width : 100%;
+	height : 100%;	
+	background-color: rgba(100, 100, 100, 0.5);
+}
+
+#container_register > div.background > div.popup {
+	margin: 1em auto;
+	width : 25em;
+	height : 20em;	
+	background-color: #FFFFFF;
+	border-radius: 0.5em;
+	box-shadow: 0px 0px 20px #666666;
+	padding: 1em;
+}
+
+#container_register > div.background > div.popup form p {margin: 0.2em 0;}
+#container_register > div.background > div.popup form p label
+{
+	display: inline-block;
+	width: 40%;
+	background-color: #EEEEEE;
+	text-align: center;
+}
+
+#container_register > div.background > div.popup form p input
+{
+	margin-left: 1em;
+	width: 50%;
+}
+
+#container_register > div.background > div.popup form p input[type="checkbox"]
+{
+	width: 0%;
+}
+
+
+#container_register > div.background > div.popup form p label.error {
+	width: 90%;
+	color: red;
+}
+
+
+#container_gameList > ul#games_list {
+	width : 900px;
+} 
+#container_gameList > ul#games_list > li {
+	display: inline-block;
+	width : 300px;
+}
+
+#container_horizontalStats {
+	margin : 0 0 0 1em;
+	padding : 0;
+}
+
+#container_horizontalStats .caption_type {
+	font-weight: bold;
+	font-size: 1.5em;
+}
+
+#container_horizontalStats .caption_text {
+	font-size: 1.5em;
+}
+
+#container_horizontalStats .horizontal {
+	float: left;
+}
+
+#container_horizontalStats .raphael_canvas {
+}
