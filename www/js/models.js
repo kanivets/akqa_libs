@@ -32,16 +32,15 @@ App.proto.models.header = Backbone.Model.extend({
 	_bIsLogged : false,
 	_sLogin : '',
 	_sName : '',
-
-	GetNavElements : function() {
-		App.utils.flow_ext(this.name + '.GetNavElements');
-		return [
-			{ type: 'games', link: App.router.BuildLink(null, 'games'), caption: App.langs.Get(this.get('lang_prefix') + '_' + 'caption_games') },
-			{ type: 'friends', link: App.router.BuildLink(null, 'friends'), caption: App.langs.Get(this.get('lang_prefix') + '_' + 'caption_friends') },
-			{ type: 'statistics', link: App.router.BuildLink(null, 'statistics'), caption: App.langs.Get(this.get('lang_prefix') + '_' + 'caption_statistics') }
-		];
-	},
 	
+	GetLink : function(sPart) {
+		return App.router.BuildLink(null, sPart);
+	},
+
+	GetCaption : function(sPart) {
+		return App.langs.Get(this.get('lang_prefix') + '_caption_' + sPart);
+	},
+
 	GetLanguages : function() {
 		App.utils.flow_ext(this.name + '.GetLanguages');
 		var aRet = [];
@@ -71,7 +70,7 @@ App.proto.models.header = Backbone.Model.extend({
 			
 	initialize : function() {		
 		App.utils.flow_ext('HeadModel.initialize');
-		_.bindAll(this, 'GetNavElements', 'GetLanguages', 'GetCurrentPart', 'GetCurrentLanguage', 'IsLogged', 'GetLogin', 'GetName');		
+		_.bindAll(this, 'GetLink', 'GetCaption', 'GetLanguages', 'GetCurrentPart', 'GetCurrentLanguage', 'IsLogged', 'GetLogin', 'GetName');		
 		
 		var loginData = App.storage.Get('login');
 		this._bIsLogged = !!loginData;

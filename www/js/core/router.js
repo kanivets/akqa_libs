@@ -22,7 +22,7 @@ App.proto.routers._common = Backbone.Router.extend({
 		
 		if (!lang || typeof(lang) != 'string') lang = App.langs.GetCurrentLanguage();
 		if (!part || typeof(part) != 'string') part = this.current_part;
-		
+		if (part == '/') part = '';
 		return '/' + lang + '/' + part;
 	},
 	

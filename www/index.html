@@ -16,35 +16,10 @@
         <link rel="stylesheet" href="/css/libs/QUnit.css">
         <link rel="stylesheet" href="/css/libs/jRating.css">
         <link rel="stylesheet" href="/css/common.css">
-        <link rel="stylesheet" href="css/main.css">
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
-        <![endif]-->
+        <link rel="stylesheet" href="/css/main.css">
 
 
-
-        <header>
-          <a href="/"><img src="img/logo.png" alt="Be Brainy" /></a>
-          <nav>
-            <ul>
-              <li><a href="#">games</a></li>
-              <li><a href="#">friends</a></li>
-              <li><a href="#">statistics</a></li>
-            </ul>
-          </nav>
-          <a class="drop-down" href="#">gattoo</a>
-        </header>
-
-
-
-
-
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="/js/libs/jquery-1.8.2.min.js"><\/script>')</script>
-        
+        <script src="/js/libs/jquery-1.8.2.min.js"></script>
         <!-- <script src="//connect.facebook.net/en_US/all.js"></script> <!-- FB JS SDK -->
         <script src="/js/libs/modernizr.js"></script>
         <script src="/js/libs/hammer.js"></script>
@@ -57,7 +32,7 @@
         
         <script src="/js/core/utils.js"></script>
         <script src="/js/core/storage.js"></script>
-        <script src="/js/core/routes.js"></script>
+        <script src="/js/core/router.js"></script>
         <script src="/js/core/views.js"></script>
         <script src="/js/core/graphics.js"></script>
         
@@ -83,37 +58,29 @@
         
         -->
         
-        <!--<script src="/js/libs/jasmine.js"></script>-->     
-        
+        <!--<script src="/js/libs/jasmine.js"></script>-->   
+
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+        <![endif]-->
+
+
+
         <header>
-			<nav>
-				<% 
-					for (var i in nav_elements) {
-					%><a class="parts<%=cur_part == nav_elements[i].type ? ' active' : ''%>" data-link="<%=nav_elements[i].link%>" href="<%=nav_elements[i].link%>"><%=nav_elements[i].caption%></a><%
-						if (nav_elements[i] != _.last(nav_elements)) {
-							%> | <%	
-						}					
-					}
-				%>
-							
-				<span class="separator">|</span>
-				
-				<%
-					for (var i in lang_elements) {
-						%><a class="langs <%=lang_elements[i].type%><%=cur_language == lang_elements[i].type ? ' active' : ''%>" data-link="<%=lang_elements[i].link%>" href="<%=lang_elements[i].link%>"><%=lang_elements[i].caption%></a> <%
-					}
-				%> 
-				
-				<%
-					if (isLogined) {
-						%> Hello, <%=login_name%>! <%
-					} else {
-						%> <button class='signin'>SIGN IN</button> <%	
-					}	
-								
-				%>	
-			</nav>
+          <a href="<%=home_link%>" class='link'><img src="/img/logo.png" alt="Be Brainy" /></a>
+          <nav>
+            <ul>
+              <li><a href="<%=games_link%>" class="link<%=cur_part == 'games' ? ' active' : ''%>"><%=games_caption%></a></li>
+              <li><a href="<%=friends_link%>" class="link<%=cur_part == 'friends' ? ' active' : ''%>"><%=friends_caption%></a></li>
+              <li><a href="<%=statistics_link%>" class="link<%=cur_part == 'statistics' ? ' active' : ''%>"><%=statistics_caption%></a></li>
+            </ul>
+          </nav>
+          <a class="drop-down link" href="<%=home_link%>">gattoo</a>
         </header>
+
+
         
 		<section class="hidden" id="container_register">
 			<div class="background">

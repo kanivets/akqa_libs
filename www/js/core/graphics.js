@@ -55,9 +55,6 @@ App.graphics.wrappers.raphael = (function() {
 		},
 
 		DrawMap : function (sMinColor, sMaxColor, aCountries, aData, sStrokeColor) {
-
-console.info('123');
-
 			var minR = parseInt(sMinColor.substr(1, 2), 16);
 			var minG = parseInt(sMinColor.substr(3, 2), 16);
 			var minB = parseInt(sMinColor.substr(4, 2), 16);

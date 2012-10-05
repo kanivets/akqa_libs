@@ -24,18 +24,30 @@ App.proto.views.header = App.proto.views._static.extend({
 	templateCompiled : null,
 			
 	events : {
-		'click a.parts' : 'ChangePart',
+		'click a.link' : 'ChangePart',
 		'click a.langs' : 'ChangeLanguage',
 		'click button.signin' : 'SignIn'
 	},	
 			
 	render : function() {
-		App.utils.flow_ext(this.name + '.render');
+		App.utils.log(this.name + '.render');
 		var t = this.templateCompiled({
-			nav_elements: this.model.GetNavElements(), 
+
+			games_link : this.model.GetLink('games'),
+			friends_link : this.model.GetLink('friends'),
+			statistics_link : this.model.GetLink('statistics'),
+
+			games_caption : this.model.GetCaption('games'),
+			friends_caption : this.model.GetCaption('friends'),
+			statistics_caption : this.model.GetCaption('statistics'),
+
+			//nav_elements: this.model.GetNavElements(), 
 			lang_elements: this.model.GetLanguages(), 
 			cur_language: this.model.GetCurrentLanguage(), 
 			cur_part : this.model.GetCurrentPart(),
+
+			home_link : App.router.BuildLink(null, 'games'),
+
 			isLogined : this.model.IsLogged(),
 			login_name : this.model.GetName(),
 			register_link : this.model.GetRegisterLink(),
@@ -48,7 +60,7 @@ App.proto.views.header = App.proto.views._static.extend({
 	
 	initialize : function(args) {
       	App.proto.views._static.prototype.initialize.call(this, args);
-		App.utils.flow_ext(this.name + '.initialize');
+		App.utils.log(this.name + '.initialize');
       	_.bindAll(this, 'render', 'ChangePart', 'ChangeLanguage'); // every function that uses 'this' as the current object should be in here
 				
 		var t = this.$el.html().replace(/\&lt;\%/g, '<%').replace(/\%\&gt;/g, '%>');
@@ -58,13 +70,13 @@ App.proto.views.header = App.proto.views._static.extend({
 	ChangeLanguage : function(e) {
 		App.utils.flow_ext(this.name + '.ChangeLanguage');	
 		e.preventDefault();
-		App.router.NavigateTo(e.target.getAttribute('data-link'));	
+		App.router.NavigateTo(e.currentTarget.getAttribute('href'));	
 	},
 	
 	ChangePart : function(e) {
 		App.utils.flow_ext(this.name + '.ChangePart');	
 		e.preventDefault();
-		App.router.NavigateTo(e.target.getAttribute('data-link'));	
+		App.router.NavigateTo(e.currentTarget.getAttribute('href'));	
 	},
 	
 	SignIn : function(e) {
@@ -258,7 +270,7 @@ App.proto.views.stats.mostPlayed = App.proto.views._static.extend({
 	},
 
 	DrawGraphics : function () {
-		App.utils.log(this.name + '(' + this.model.get('type') + ').DrawGraphics');	
+		App.utils.flow_ext(this.name + '(' + this.model.get('type') + ').DrawGraphics');	
 
 		var containerW = 200;
 		var containerH = 100;
