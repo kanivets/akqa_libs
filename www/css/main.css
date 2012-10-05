@@ -1,0 +1,20 @@
+@font-face {
+	font-family: 'Sertig';
+	src: url('fonts/Sertig.ttf')  format('truetype');
+}
+
+header {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+header nav li {
+	float: left;
+}
+
+header nav li a {
+	color: #ea7c39;
+	font-size: 18px;
+	text-transform: uppercase;
+	font-family: 'Sertig';
+}
