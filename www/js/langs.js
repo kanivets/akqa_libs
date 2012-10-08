@@ -27,6 +27,8 @@ var Languator = {
 		register_login : {en : 'Login', ru : 'Логин'},
 		register_name : {en : 'Name', ru : 'Имя'},
 
+		gameList_caption_views : {en : 'views', ru : 'просм.'},
+
 		mostPlayed_girls_type : {en : "Girls'", ru : 'Девушкам'},
 		mostPlayed_girls_text : {en : "most played games", ru : 'нравится'},
 

@@ -222,6 +222,8 @@ App.proto.views.gameList = App.proto.views._dynamic.extend({
 		this.DrawIcons();		
 		this.$el.find('.page.prev').attr('href', App.router.BuildLink(null, null, {page : parseInt(this.model.GetCurrentPage()) - 1, sort : this.model.GetCurrentSort()}));
 		this.$el.find('.page.next').attr('href', App.router.BuildLink(null, null, {page : parseInt(this.model.GetCurrentPage()) + 1, sort : this.model.GetCurrentSort()}));
+
+		this.$el.find('.views span').html(this.model.GetViewsCaption());
 	},
 	
 	DrawIcons : function() {	

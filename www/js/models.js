@@ -217,9 +217,15 @@ App.proto.models.gameList = Backbone.Collection.extend({
 	_nCurrentPage : 1,
 	_nTotalPages : 1,
 	
+	defaults : {
+		lang_prefix : 'gameList'
+	},
+
 	_sCurrentSort : 'featured',
 
 	_aPagedData : {},
+
+	GetViewsCaption : function () {return App.langs.Get(this.defaults.lang_prefix + '_caption_views')},
 
 	GetByGameID : function(gameID) { return this.get(gameID); },
 	GetMaxPages : function () {return this._nMaxPages;},
@@ -312,8 +318,7 @@ App.proto.models.gameList = Backbone.Collection.extend({
 			if (options.itemsPerPage) this.itemsPerPage = options.itemsPerPage;
 		}
 
-		this._nCurrentPage = App.router.GetParams('games', 'page') || 1;
-		console.info(this._nCurrentPage);		
+		this._nCurrentPage = App.router.GetParams('games', 'page') || 1;	
 	}
 	
 });
