@@ -108,7 +108,56 @@ input.search {
 	padding: 0;
 	margin: 0;
 	margin-right: 40px;
+	margin-bottom: 40px;
+	overflow: hidden;
 }
+
+#games_list .img {
+	width: 150px;
+	height: 86px;
+	padding: 10px;
+	border: 1px solid #ddd;
+	background-color: #f8f8f8;
+}
+
+#games_list .img:hover {
+	border: 1px solid #ea7c39;
+	background-color: #f1b18a;
+	cursor: pointer;
+}
+
+#games_list .name {
+	width: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+	color: #ff6101;
+	font-size: 12px;
+	font-family: arial;
+	text-align: center;
+	text-decoration: underline;
+	margin: 5px 10px;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis
+}
+
+#games_list .rating {
+	float: left;
+	width: 65px;
+	margin-left: 10px;	
+
+}
+
+#games_list .views {
+	margin-left: 65px;
+	text-align: right;
+	font-size: 10px;
+	color: #5a5a5a;
+	font-family: arial;
+	margin-right: 15px;
+}
+
+
+
 
 
 

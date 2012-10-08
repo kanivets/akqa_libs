@@ -105,9 +105,36 @@
 								<%=game_name%>
 							</div>
 							<div class="rating" data-rating="<%=game_rating%>" data-gameID="<%=game_id%>"></div>
-							<div class="views"><%=game_views%> views</div>
+							<div class="views"><strong><%=game_views%></strong> views</div>
 						</li>	
 					</ul>				
+				</section>
+        	</div>
+        	<div class="column-right">
+
+        	</div>
+        </div>
+
+        <div class="body">
+        	<div class="column-left">
+		        <section class="hidden" id="container_horizontalStats">
+					<div class="horizontal" id="container_mostPlayedGirls">
+						<p><span class="caption_type">type</span> <span class="caption_text">text</span></p>
+						<div class="raphael_canvas" id="raphael_canvas_mostPlayed_girls"></div>
+					</div>
+					<div class="horizontal" id="container_mostPlayedBoys">				
+						<p><span class="caption_type">type</span> <span class="caption_text">text</span></p>
+						<div class="raphael_canvas" id="raphael_canvas_mostPlayed_boys"></div>
+					</div>
+					<div class="horizontal" id="container_mostPlayedAge">
+						<p><span class="caption_text">text</span> <span class="caption_type">type</span></p>
+						<div class="raphael_canvas" id="raphael_canvas_mostPlayed_age"></div>
+					</div>
+					<div class="clear"></div>
+				</section>
+
+				<section class="hidden" id="container_worldMapStats">
+					<div id="worldMap"></div>
 				</section>
         	</div>
         	<div class="column-right">
@@ -142,25 +169,7 @@
 		
 
 		
-		<section class="hidden" id="container_horizontalStats">
-			<div class="horizontal" id="container_mostPlayedGirls">
-				<p><span class="caption_type">type</span> <span class="caption_text">text</span></p>
-				<div class="raphael_canvas" id="raphael_canvas_mostPlayed_girls"></div>
-			</div>
-			<div class="horizontal" id="container_mostPlayedBoys">				
-				<p><span class="caption_type">type</span> <span class="caption_text">text</span></p>
-				<div class="raphael_canvas" id="raphael_canvas_mostPlayed_boys"></div>
-			</div>
-			<div class="horizontal" id="container_mostPlayedAge">
-				<p><span class="caption_text">text</span> <span class="caption_type">type</span></p>
-				<div class="raphael_canvas" id="raphael_canvas_mostPlayed_age"></div>
-			</div>
-			<div class="clear"></div>
-		</section>
 
-		<section class="hidden" id="container_worldMapStats">
-			<div id="worldMap"></div>
-		</section>
 
 		<div id="qunit"> </div>
     </body>
