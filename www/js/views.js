@@ -196,29 +196,52 @@ App.proto.views.gameList = App.proto.views._dynamic.extend({
 				
 		var t = this.$el.html().replace(/\&lt;\%/g, '<%').replace(/\%\&gt;/g, '%>');
 		this.templateCompiled = _.template(t);
+				
+		var that = this;
+
+		App.on('changed_params_games', function() {
+			var nPage = App.router.GetParams('games', 'page');
+			if (!nPage) nPage = 1;
+			that.model.SetPage(nPage);
+
+			var sSort = App.router.GetParams('games', 'sort');
+			if (sSort)
+				that.model.SetSort(sSort);
+
+			that.render();
+		});
 		
 		this.model.CalculatePages();
-		
 		this.render();
 	},
 	
 	render : function() {	
 		App.utils.flow_ext(this.name + '.render, visible: ' + this._bIsVisible);
 		if (!this._bIsVisible) return;
-		
+
 		this.DrawIcons();		
+		this.$el.find('.page.prev').attr('href', App.router.BuildLink(null, null, {page : parseInt(this.model.GetCurrentPage()) - 1, sort : this.model.GetCurrentSort()}));
+		this.$el.find('.page.next').attr('href', App.router.BuildLink(null, null, {page : parseInt(this.model.GetCurrentPage()) + 1, sort : this.model.GetCurrentSort()}));
 	},
 	
-	DrawIcons : function() {		
+	DrawIcons : function() {	
+		App.utils.flow_ext(this.name + '.DrawIcons');
+
 		var that = this;
 		
 		this._gameListUL.html('');
-		var aData = this.model.GetGamesPerPage(); 
-		
+		var aData = this.model.GetCurrentGames(); 
+
 		_.each(aData, function (e) {
 			if (!e) return;
 			
-			var gameIconSrc = that._gameIconTemplate({game_id : e.GetGameID(), game_name: e.GetName(), game_rating : e.GetRating(), game_views: e.GetPlays()});	
+			var gameIconSrc = that._gameIconTemplate({
+				game_id : e.GetGameID(), 
+				game_name: e.GetName(), 
+				game_rating : e.GetRating(), 
+				game_views: e.GetPlays(),
+			});	
+
 			var icon = $(gameIconSrc);
 			$('.logo', icon).attr('src', e.GetImgSrc());
 			$('.rating', icon).jRating({
@@ -242,15 +265,15 @@ App.proto.views.gameList = App.proto.views._dynamic.extend({
 	},
 
 	PrevPage : function(e) {
+		App.utils.flow_ext(this.name + '.PrevPage');
 		e.preventDefault();
-		if (this.model.SetPrevPage())
-			this.render();
+		App.router.NavigateTo(e.currentTarget.getAttribute('href'));
 	},
 	
 	NextPage : function(e) {
+		App.utils.flow_ext(this.name + '.NextPage');
 		e.preventDefault();
-		if (this.model.SetNextPage())
-			this.render();
+		App.router.NavigateTo(e.currentTarget.getAttribute('href'));
 	}	
 });
 
@@ -388,4 +411,57 @@ App.proto.views.stats.worldMapStats = App.proto.views._dynamic.extend({
 		App.utils.flow_ext(this.name + '.initialize');			
 		_.bindAll(this, 'render');	
 	}	
+});
+
+
+App.proto.views.sorting = App.proto.views._dynamic.extend({
+	name : 'SortingView', 
+
+	events : {
+		'click a' : 'ChangeSort',
+	},
+
+	ChangeSort : function(e) {
+		App.utils.flow_ext(this.name + '.initialize');			
+		e.preventDefault();
+		App.router.NavigateTo(e.currentTarget.getAttribute('href'));
+	},
+
+	initialize : function(args) {
+		App.proto.views._dynamic.prototype.initialize.call(this, args);	
+				
+		var t = this.$el.html().replace(/\&lt;\%/g, '<%').replace(/\%\&gt;/g, '%>');
+		this._templateCompiled = _.template(t);
+
+		App.utils.flow_ext(this.name + '.initialize');	
+
+		var that = this;
+		App.on('changed_params_games', function() {that.OnChangedSort()});
+
+		_.bindAll(this, 'render', 'ChangeSort', 'OnChangedSort');	
+	},	
+
+	render : function() {			
+		App.utils.flow_ext(this.name + '.render, visible: ' + this._bIsVisible);
+		if (!this._bIsVisible) return;
+		
+		this.$el.html(this._templateCompiled({
+			cur_sorting : this.model.GetCurrentSorting(),
+			sorting_featured_caption : this.model.GetCaption('featured'),
+			sorting_newest_caption : this.model.GetCaption('newest'),
+			sorting_rating_caption : this.model.GetCaption('rating'),
+			sorting_views_caption : this.model.GetCaption('views'),
+			sorting_votes_caption : this.model.GetCaption('votes'),
+
+			sorting_featured_link : this.model.GetLink('featured'),
+			sorting_newest_link : this.model.GetLink('newest'),
+			sorting_rating_link : this.model.GetLink('rating'),
+			sorting_views_link : this.model.GetLink('views'),
+			sorting_votes_link : this.model.GetLink('votes')
+		}));
+	},
+
+	OnChangedSort : function() {
+		this.render();
+	}
 });

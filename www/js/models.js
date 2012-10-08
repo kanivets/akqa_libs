@@ -199,6 +199,7 @@ App.proto.models.gameIcon = Backbone.Model.extend({
 	
 	GetGameID : function() { return this.get('gameData').id; },
 	GetRating : function() { return this.get('gameData').rating; },
+	GetFeaturedIndex : function() { return this.get('gameData').featured_index; },
 	GetPlays : function() { return this.get('gameData').plays; },
 	GetName : function() { return this.get('gameData').name; },
 	GetImgSrc : function() { return '/img/game_icons/' + this.get('gameData').id + '.' + this.get('gameData').pic_ext; },
@@ -216,11 +217,13 @@ App.proto.models.gameList = Backbone.Collection.extend({
 	_nCurrentPage : 1,
 	_nTotalPages : 1,
 	
+	_sCurrentSort : 'featured',
+
 	_aPagedData : {},
 
 	GetByGameID : function(gameID) { return this.get(gameID); },
 	GetMaxPages : function () {return this._nMaxPages;},
-	GetCurrentPage : function () {return this._nTotalPages;},
+	GetCurrentPage : function () {return this._nCurrentPage;},
 	IsPrevExists : function () {return this._nCurrentPage > 1},
 	IsNextExists : function () {return this._nCurrentPage < this._nTotalPages},
 	
@@ -235,43 +238,115 @@ App.proto.models.gameList = Backbone.Collection.extend({
 		if (nPage > this._nTotalPages) return false;
 		
 		this._nCurrentPage = nPage;
+		App.router.SetParams('games', 'page', nPage);
 		return true; 
 	},
 	
 	SetNextPage : function () {return this.SetPage(this._nCurrentPage + 1);},
 	SetPrevPage : function () {return this.SetPage(this._nCurrentPage - 1);}, 
 	
-	GetGamesPerPage : function(nPage) {
-		nPage = nPage ? nPage : this._nCurrentPage;
-		App.utils.flow_ext(this.name + '.GetGamesPerPage(' + nPage +')');
+	GetCurrentGames : function() {
+		App.utils.flow_ext(this.name + '.GetGamesPerPage(' + this._sCurrentSort + ', ' + this._nCurrentPage +')');
+
+		if (this._aPagedData[this._sCurrentSort] && this._aPagedData[this._sCurrentSort][this._nCurrentPage]) 
+			return this._aPagedData[this._sCurrentSort][this._nCurrentPage]; 
 		
-		if (this._aPagedData[nPage]) 
-			return this._aPagedData[nPage]; 
-		
+		var that = this;
+		var aSorted = _.sortBy(this.models, function(el) {
+			switch (that._sCurrentSort) {
+				case 'featured' : return -el.GetFeaturedIndex();
+				case 'newest' : return -el.GetGameID();
+				case 'rating' : return -el.GetRating();
+				case 'views' : return -el.GetPlays();
+				case 'votes' : return -el.GetPlays() / el.GetRating();
+				default : return 0;
+			}
+		});
+
 		var aRet = [];
-		var nStart = (nPage - 1) * this.itemsPerPage;
-		var nEnd = nPage * this.itemsPerPage;
+		var nStart = (this._nCurrentPage - 1) * this.itemsPerPage;
+		var nEnd = this._nCurrentPage * this.itemsPerPage;
 		
 		if (this.models.length < nStart) return [null];
 		if (this.models.length < nEnd) nEnd = this.models.length;					
 		for (var i = nStart; i < nEnd; i++)
-			aRet.push(this.models[i]);
+			aRet.push(aSorted[i]);
 			
-		this._aPagedData[nPage] = aRet;
+		if (!this._aPagedData[this._sCurrentSort]) this._aPagedData[this._sCurrentSort] = {}	
+		this._aPagedData[this._sCurrentSort][this._nCurrentPage] = aRet;
 		return aRet;
 	},
 	
+	GetCurrentSort : function () {
+		App.utils.flow_ext(this.name + '.GetCurrentSort()');
+		return this._sCurrentSort;
+	},
+
+	SetSort : function (sSort) {
+		App.utils.flow_ext(this.name + '.SetCurrentSort(' + sSort +')');
+
+		if (this._sCurrentSort == sSort) return;
+
+		switch (sSort) {
+			case 'featured' :
+			case 'newest' : 
+			case 'rating' : 
+			case 'views' : 
+			case 'votes' : 
+				this._sCurrentSort = sSort;
+				break;
+			default :
+				this._sCurrentSort = 'featured';
+				break;
+		}
+
+		App.router.SetParams('games', 'sort', this._sCurrentSort);
+		this.SetPage(1);
+	},
+
 	initialize : function(options) {		
 		App.utils.flow_ext(this.name + '.initialize');
-		_.bindAll(this, 'GetByGameID', 'GetMaxPages', 'GetCurrentPage', 'IsPrevExists', 'IsNextExists', 'SetPage', 'SetNextPage', 'SetPrevPage', 'GetGamesPerPage');
+		_.bindAll(this, 'GetByGameID', 'GetMaxPages', 'GetCurrentPage', 'IsPrevExists', 'IsNextExists', 'SetPage', 'SetNextPage', 'SetPrevPage', 'GetCurrentGames', 'GetCurrentSort', 'SetSort');
 		
 		if (options) {
 			if (options.itemsPerPage) this.itemsPerPage = options.itemsPerPage;
-		}		
+		}
+
+		this._nCurrentPage = App.router.GetParams('games', 'page') || 1;
+		console.info(this._nCurrentPage);		
 	}
 	
 });
 
+
+App.proto.models.sorting = Backbone.Model.extend({
+	name : 'SortingModel',
+
+	defaults : {	
+		lang_prefix : 'sorting'
+	},
+
+	GetCaption : function(sType) {
+		App.utils.flow_ext(this.name + '.GetCaption');
+		return App.langs.Get(this.get('lang_prefix') + '_caption_' + sType);
+	},
+
+	GetLink : function(sType) {
+		App.utils.flow_ext(this.name + '.GetLink');
+		return App.router.BuildLink(null, null, {sort : sType, page : 1});
+	},
+
+	GetCurrentSorting : function() {
+		App.utils.flow_ext(this.name + '.GetCurrentSorting');
+		var sort = App.router.GetParams('games', 'sort');
+		return sort ? sort  : 'featured';
+	},
+	
+	initialize : function() {		
+		App.utils.flow_ext(this.name + '.initialize');
+		_.bindAll(this, 'GetCaption', 'GetLink' , 'GetCurrentSorting');		
+	}	
+});
 
 App.proto.models.stats = App.proto.models.stats || {};
 

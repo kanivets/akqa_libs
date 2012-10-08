@@ -36,6 +36,12 @@ var Languator = {
 		mostPlayed_age_type : {en : 'age', ru : 'возраст игроков'},
 		mostPlayed_age_text : {en : "Players'", ru : 'Средний'},
 		
+		sorting_caption_featured  :{en : 'Featured', ru : 'Популярные'},
+		sorting_caption_newest  :{en : 'Newest', ru : 'Новые'},
+		sorting_caption_rating  :{en : 'Rating', ru : 'Рейтинг'},
+		sorting_caption_views  :{en : 'Views', ru : 'Просмотры'},
+		sorting_caption_votes  :{en : 'Votes', ru : 'Голоса'},
+
 		unknown : '...'
 	},
 	

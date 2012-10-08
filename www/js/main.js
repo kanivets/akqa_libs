@@ -16,7 +16,7 @@ $(document).ready(function(){
 	_.extend(App, Backbone.Events);
 	_.extend(App.langs, Backbone.Events);	
 		
-	App.router = new App.proto.router();	
+	App.router = new App.proto.router();
 	App.router.default_part = 'games';
 	Backbone.history.start({pushState : true});
 		
@@ -28,6 +28,13 @@ $(document).ready(function(){
 								containerID : 'container_register',
 								parts : {'signin' : true}
 							});
+
+
+	App.views.sorting = new App.proto.views.sorting({
+								model : new App.proto.models.sorting(),
+								containerID : 'container_sorting', 
+								parts : {'games' : true}});	
+
 	
 	App.models.gameList = new App.proto.models.gameList({
 								itemsPerPage : 9,

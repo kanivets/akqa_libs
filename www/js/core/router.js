@@ -17,15 +17,51 @@ App.proto.routers._common = Backbone.Router.extend({
 		_.bindAll(this, 'GetCurrentPart', 'NavigateTo');
 	},
 	
-	BuildLink : function(lang, part) {
+	BuildLink : function(lang, part, customParams) {
 		App.utils.flow_core('MainRouter.BuildLink(' + lang + ', ' + part + ')');
 		
 		if (!lang || typeof(lang) != 'string') lang = App.langs.GetCurrentLanguage();
 		if (!part || typeof(part) != 'string') part = this.current_part;
 		if (part == '/') part = '';
-		return '/' + lang + '/' + part;
+
+		var sLink = '/' + lang + '/' + part;
+		var aParams = this.GetAllParams(part);
+		if (aParams)
+			for (var i in aParams)
+				if (!customParams || !customParams[i])
+					sLink += '/' + i + '/' + aParams[i];
+
+		for (var i in customParams)
+			sLink += '/' + i + '/' + customParams[i];
+
+
+		return sLink;
 	},
 	
+	_aParams : {},
+
+	ClearParams : function(sPart) {
+		this._aParams[sPart] = {};
+	},
+ 
+	SetParams : function(sPart, sIndex, sData) {
+		App.utils.flow_core('MainRouter.SetParams(' + sPart + ', ' + sIndex + ', ' + sData + ')');
+		this._aParams[sPart] = this._aParams[sPart] || {};
+		return this._aParams[sPart][sIndex] = sData;
+	},
+
+	GetAllParams : function(sPart) {
+		App.utils.flow_core('MainRouter.GetParams(' + sPart + ')');
+		return this._aParams[sPart];
+	},
+
+	GetParams : function(sPart, sIndex) {
+		App.utils.flow_core('MainRouter.GetParams(' + sPart + ', ' + sIndex + ')');
+		if (!this._aParams[sPart]) return null;
+		if (!this._aParams[sPart][sIndex]) return null;
+		return this._aParams[sPart][sIndex];
+	},
+
 	NavigateTo : function (link, silent) {
 		if ((link === undefined) || (typeof(link) != 'string')) return false;
 		App.utils.flow_core('MainRouter.NavigateTo(\'' + link + '\')');
@@ -39,5 +75,10 @@ App.proto.routers._common = Backbone.Router.extend({
 		
 		this.navigate(this.BuildLink(null, part), {trigger: true});
 		return true;
+	},
+
+	Init : function () {
+		App.utils.flow_core('MainRouter.Init');
+		_.bindAll(this, 'GetCurrentPart', 'BuildLink', 'NavigateTo', 'NavigateToPart', 'ClearParams', 'SetParams', 'GetParams')
 	}
 });

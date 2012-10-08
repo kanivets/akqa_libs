@@ -83,19 +83,19 @@
 
         <div class="body">
         	<div class="column-left">
-        		<div class="games-navigation">
+        		<div class="games-navigation" id="container_sorting">
         			<input type="text" class="search" value="" placeholder="search" />
         			<div class="sorting">
-        				<a class="active" href="#">Featured</a>
-        				<a href="#">Newest</a>
-        				<a href="#">Rating</a>
-        				<a href="#">Views</a>
-        				<a href="#">Votes</a>
+                        <a class="<%=cur_sorting == 'featured' ? ' active' : ''%>" href="<%=sorting_featured_link%>"><%=sorting_featured_caption%></a>
+                        <a class="<%=cur_sorting == 'newest' ? ' active' : ''%>" href="<%=sorting_newest_link%>"><%=sorting_newest_caption%></a>
+                        <a class="<%=cur_sorting == 'rating' ? ' active' : ''%>" href="<%=sorting_rating_link%>"><%=sorting_rating_caption%></a>
+                        <a class="<%=cur_sorting == 'views' ? ' active' : ''%>" href="<%=sorting_views_link%>"><%=sorting_views_caption%></a>
+                        <a class="<%=cur_sorting == 'votes' ? ' active' : ''%>" href="<%=sorting_votes_link%>"><%=sorting_votes_caption%></a>
         			</div>
         		</div>
 
         		<section class="hidden" id="container_gameList">
-					<p><a class="page prev" href="/"> < PREV</a> | <a class="page next" href="/">NEXT ></a></p>	
+					<p><a class="page prev" href="<%=list_prev_page_link%>"> < PREV</a> | <a class="page next" href="<%=list_next_page_link%>">NEXT ></a></p>	
 					<ul id="games_list">
 						<li class="game" data-gameid="<%=game_id%>">
 							<div class="img"> 
