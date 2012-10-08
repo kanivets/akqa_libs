@@ -218,10 +218,10 @@ App.proto.views.gameList = App.proto.views._dynamic.extend({
 		_.each(aData, function (e) {
 			if (!e) return;
 			
-			var gameIconSrc = that._gameIconTemplate({game_id : e.GetGameID(), game_name: e.GetName(), game_rating : e.GetRating()});	
+			var gameIconSrc = that._gameIconTemplate({game_id : e.GetGameID(), game_name: e.GetName(), game_rating : e.GetRating(), game_views: e.GetPlays()});	
 			var icon = $(gameIconSrc);
-			$('.game.logo', icon).attr('src', e.GetImgSrc());
-			$('.game.rating', icon).jRating({
+			$('.logo', icon).attr('src', e.GetImgSrc());
+			$('.rating', icon).jRating({
 										showRateInfo : true, 
 										bigStarsPath : '/img/jRating_star_big.png',
 										smallStarsPath : '/img/jRating_star_small.png',

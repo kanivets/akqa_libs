@@ -75,14 +75,6 @@ nav a.langs.es { background: url("../img/flag_es.png") no-repeat; }
 }
 
 
-#container_gameList > ul#games_list {
-	width : 900px;
-} 
-#container_gameList > ul#games_list > li {
-	display: inline-block;
-	width : 300px;
-}
-
 #container_horizontalStats {
 	margin : 0 0 0 1em;
 	padding : 0;

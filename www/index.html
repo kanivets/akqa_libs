@@ -77,9 +77,43 @@
               <li><a href="<%=statistics_link%>" class="link<%=cur_part == 'statistics' ? ' active' : ''%>"><%=statistics_caption%></a></li>
             </ul>
           </nav>
-          <a class="drop-down link" href="<%=home_link%>">gattoo</a>
+          <!-- <a class="drop-down link" href="<%=home_link%>">gattoo</a> -->
         </header>
 
+
+        <div class="body">
+        	<div class="column-left">
+        		<div class="games-navigation">
+        			<input type="text" class="search" value="" placeholder="search" />
+        			<div class="sorting">
+        				<a class="active" href="#">Featured</a>
+        				<a href="#">Newest</a>
+        				<a href="#">Rating</a>
+        				<a href="#">Views</a>
+        				<a href="#">Votes</a>
+        			</div>
+        		</div>
+
+        		<section class="hidden" id="container_gameList">
+					<p><a class="page prev" href="/"> < PREV</a> | <a class="page next" href="/">NEXT ></a></p>	
+					<ul id="games_list">
+						<li class="game" data-gameid="<%=game_id%>">
+							<div class="img"> 
+								<img class="logo" alt="<%=game_name%>" title="<%=game_name%>" />	
+							</div>
+							<div class="name">
+								<%=game_name%>
+							</div>
+							<div class="rating" data-rating="<%=game_rating%>" data-gameID="<%=game_id%>"></div>
+							<div class="views"><%=game_views%> views</div>
+						</li>	
+					</ul>				
+				</section>
+        	</div>
+        	<div class="column-right">
+
+        	</div>
+        </div>
 
         
 		<section class="hidden" id="container_register">
@@ -106,22 +140,6 @@
 			<%=test%>
 		</section>
 		
-		<section class="hidden" id="container_gameList">
-			<p><a class="page prev" href="/"> < PREV</a> | <a class="page next" href="/">NEXT ></a></p>	
-			
-			<ul id="games_list">
-				<li class="game" data-gameid="<%=game_id%>">
-					<div class="game img"> 
-						<img class="game logo" alt="<%=game_name%>" title="<%=game_name%>" />	
-					</div>
-					<div class="game name">
-						<%=game_name%>
-					</div>
-					<div class="game rating" data-rating="<%=game_rating%>" data-gameID="<%=game_id%>"></div>
-				</li>	
-			</ul>				
-		</section>
-
 
 		
 		<section class="hidden" id="container_horizontalStats">
