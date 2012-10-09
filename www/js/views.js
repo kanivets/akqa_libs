@@ -182,7 +182,7 @@ App.proto.views.gameList = App.proto.views._dynamic.extend({
 	
 	events : {
 		'click a.page.prev' : 'PrevPage',
-		'click a.page.next' : 'NextPage',
+		'click a.page.next' : 'NextPage'
 	},
 	
 	initialize : function(args) {
@@ -212,11 +212,11 @@ App.proto.views.gameList = App.proto.views._dynamic.extend({
 		});
 		
 		this.model.CalculatePages();
-		this.render();
 	},
 	
-	render : function() {	
-		App.utils.flow_ext(this.name + '.render, visible: ' + this._bIsVisible);
+	render : function() {
+		
+		App.utils.log(this.name + '.render, visible: ' + this._bIsVisible);
 		if (!this._bIsVisible) return;
 
 		this.DrawIcons();		
@@ -241,7 +241,7 @@ App.proto.views.gameList = App.proto.views._dynamic.extend({
 				game_id : e.GetGameID(), 
 				game_name: e.GetName(), 
 				game_rating : e.GetRating(), 
-				game_views: e.GetPlays(),
+				game_views: e.GetPlays()
 			});	
 
 			var icon = $(gameIconSrc);
@@ -420,7 +420,7 @@ App.proto.views.sorting = App.proto.views._dynamic.extend({
 	name : 'SortingView', 
 
 	events : {
-		'click a' : 'ChangeSort',
+		'click a' : 'ChangeSort'
 	},
 
 	ChangeSort : function(e) {
@@ -444,7 +444,7 @@ App.proto.views.sorting = App.proto.views._dynamic.extend({
 	},	
 
 	render : function() {			
-		App.utils.flow_ext(this.name + '.render, visible: ' + this._bIsVisible);
+		App.utils.log(this.name + '.render, visible: ' + this._bIsVisible);
 		if (!this._bIsVisible) return;
 		
 		this.$el.html(this._templateCompiled({
@@ -464,6 +464,6 @@ App.proto.views.sorting = App.proto.views._dynamic.extend({
 	},
 
 	OnChangedSort : function() {
-		this.render();
+		//this.render();
 	}
 });

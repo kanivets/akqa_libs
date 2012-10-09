@@ -47,7 +47,7 @@ $(document).ready(function(){
 								model : App.models.gameList,
 								containerID : 'container_gameList', 
 								parts : {'games' : true}});	
-
+/*
 
 	App.views.horizontalStats = new App.proto.views.stats.horizontalStats({
 									containerID : 'container_horizontalStats', 

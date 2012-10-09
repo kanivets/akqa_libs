@@ -89,15 +89,14 @@ App.proto.views._dynamic = Backbone.View.extend({
 	},
 	
 	OnChangedPart : function() {
-		App.utils.flow_core(this.name + '(PartView).OnChangedPart');			
-		this.SetVisibility(this.visible_at_parts[App.router.GetCurrentPart()] == true);	
+		App.utils.flow_core(this.name + '(PartView).OnChangedPart');	
+		this.SetVisibility(this.visible_at_parts[App.router.GetCurrentPart()] == true);				
+		this.render();
 	},
 	
 	OnPageLoaded : function() {
 		App.utils.flow_core(this.name + '(PartView).OnPageLoaded');	
 		this.OnChangedPart();	
-			
-		this.render();
 	},
 	
 	initialize : function(args) {

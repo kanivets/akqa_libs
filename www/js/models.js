@@ -362,7 +362,7 @@ App.proto.models.stats.mostPlayed = Backbone.Model.extend({
 
 	defaults : {	
 		lang_prefix : 'mostPlayed',
-		type : '',
+		type : ''
 	},
 
 	GetCaption : function(sKind) {

@@ -2,7 +2,7 @@ div#qunit {margin-top: 5em;}
 
 div.clear {clear: both;}
 
-body > .hidden {
+.hidden {
 	display: none;
 }
 
