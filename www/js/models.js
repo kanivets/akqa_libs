@@ -2,25 +2,6 @@ var App = App || {};
 App.proto = App.proto || {};
 App.proto.models = App.proto.models || {};
 
-App.proto.models.title = Backbone.Model.extend({
-	name : 'TitleModel',
-
-	defaults : {		
-		lang_prefix : 'title'		
-	},
-
-	GetPageTitle : function() {
-		App.utils.flow_ext(this.name + '.GetPageTitle');
-		var part = App.router.current_part;
-				
-		return App.langs.Get('app_name') + ' :: ' + App.langs.Get(this.get('lang_prefix') + '_' + (part == '' ? 'main' : part));
-	},
-	
-	initialize : function() {		
-		App.utils.flow_ext(this.name + '.initialize');	
-		_.bindAll(this, 'GetPageTitle');				
-	}	
-}); 
 
 App.proto.models.header = Backbone.Model.extend({
 	name : 'HeaderModel',
@@ -33,8 +14,8 @@ App.proto.models.header = Backbone.Model.extend({
 	_sLogin : '',
 	_sName : '',
 	
-	GetLink : function(sPart) {
-		return App.router.BuildLink(null, sPart);
+	GetLink : function(sPart) {		
+		return App.router.BuildLink(null, sPart, App.router.GetAllParams(sPart));
 	},
 
 	GetCaption : function(sPart) {
@@ -46,7 +27,7 @@ App.proto.models.header = Backbone.Model.extend({
 		var aRet = [];
 		var aLangs = App.langs.GetAvailableLanguages();
 		for (var i in aLangs)
-			aRet.push({type: aLangs[i], link: App.router.BuildLink(aLangs[i], null), caption: App.langs.Get(this.get('lang_prefix') + '_' + 'langs_' + aLangs[i])})
+			aRet.push({type: aLangs[i], link: App.router.BuildLink(aLangs[i], null, App.router.GetAllParams()), caption: App.langs.Get(this.get('lang_prefix') + '_' + 'langs_' + aLangs[i])})
 		
 		return aRet;
 	},
@@ -61,7 +42,7 @@ App.proto.models.header = Backbone.Model.extend({
 		return App.langs.GetCurrentLanguage();
 	},
 	
-	GetRegisterLink : function() { return App.router.BuildLink(null, 'register'); },
+	GetRegisterLink : function() { return App.router.BuildLink(null, 'register', {}); },
 	GetRegisterCaption : function() { return App.langs.Get(this.get('lang_prefix') + '_' + 'caption_register');	},
 	
 	IsLogged : function() { return this._bIsLogged; },
@@ -251,11 +232,12 @@ App.proto.models.gameList = Backbone.Collection.extend({
 	SetNextPage : function () {return this.SetPage(this._nCurrentPage + 1);},
 	SetPrevPage : function () {return this.SetPage(this._nCurrentPage - 1);}, 
 	
-	GetCurrentGames : function() {
+	GetCurrentGames : function(bIsUsingCache) {
 		App.utils.flow_ext(this.name + '.GetGamesPerPage(' + this._sCurrentSort + ', ' + this._nCurrentPage +')');
 
-		if (this._aPagedData[this._sCurrentSort] && this._aPagedData[this._sCurrentSort][this._nCurrentPage]) 
+		if (this._aPagedData[this._sCurrentSort] && this._aPagedData[this._sCurrentSort][this._nCurrentPage]) {
 			return this._aPagedData[this._sCurrentSort][this._nCurrentPage]; 
+		}
 		
 		var that = this;
 		var aSorted = _.sortBy(this.models, function(el) {
@@ -275,10 +257,14 @@ App.proto.models.gameList = Backbone.Collection.extend({
 		
 		if (this.models.length < nStart) return [null];
 		if (this.models.length < nEnd) nEnd = this.models.length;					
-		for (var i = nStart; i < nEnd; i++)
+		for (var i = nStart; i < nEnd; i++) {
 			aRet.push(aSorted[i]);
+		}
 			
-		if (!this._aPagedData[this._sCurrentSort]) this._aPagedData[this._sCurrentSort] = {}	
+		if (!this._aPagedData[this._sCurrentSort]) {
+			this._aPagedData[this._sCurrentSort] = {};
+		}
+
 		this._aPagedData[this._sCurrentSort][this._nCurrentPage] = aRet;
 		return aRet;
 	},
@@ -318,7 +304,7 @@ App.proto.models.gameList = Backbone.Collection.extend({
 			if (options.itemsPerPage) this.itemsPerPage = options.itemsPerPage;
 		}
 
-		this._nCurrentPage = App.router.GetParams('games', 'page') || 1;	
+		this._nCurrentPage = App.router.GetParam('page') || 1;	
 	}
 	
 });

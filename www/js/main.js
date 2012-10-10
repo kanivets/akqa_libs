@@ -20,21 +20,9 @@ $(document).ready(function(){
 	App.router.default_part = 'games';
 	Backbone.history.start({pushState : true});
 		
-	App.views.title = new App.proto.views.title({el : "title", model: new App.proto.models.title()});	
-	App.views.header = new App.proto.views.header({el : "header", model: new App.proto.models.header()});
+	App.views.title = new App.proto.views.title({el : "title"});	
+	App.views.header = new App.proto.views.header({el : "header"});
 	
-	App.views.register = new App.proto.views.register({
-								model : new App.proto.models.register(),
-								containerID : 'container_register',
-								parts : {'signin' : true}
-							});
-
-
-	App.views.sorting = new App.proto.views.sorting({
-								model : new App.proto.models.sorting(),
-								containerID : 'container_sorting', 
-								parts : {'games' : true}});	
-
 	
 	App.models.gameList = new App.proto.models.gameList({
 								itemsPerPage : 9,
@@ -43,11 +31,9 @@ $(document).ready(function(){
 	for (var i in App.data.games)
 		App.models.gameList.add(new App.proto.models.gameIcon({gameData : App.data.games[i]}), {silent: true});
 	
-	App.views.gameList = new App.proto.views.gameList({
-								model : App.models.gameList,
-								containerID : 'container_gameList', 
-								parts : {'games' : true}});	
-/*
+	App.views.gameList = new App.proto.views.games({
+								containerID : 'container_games', 
+								parts : {'games' : true}});
 
 	App.views.horizontalStats = new App.proto.views.stats.horizontalStats({
 									containerID : 'container_horizontalStats', 
@@ -58,6 +44,12 @@ $(document).ready(function(){
 									containerID : 'container_worldMapStats', 
 									parts : {'games' : true}
 								});
+/*
+	App.views.testAnimation = new App.proto.views.testAnimation({
+									containerID : 'container_testAnimation', 
+									parts : {'games' : true}
+								});
+*/
 
 
 	//$('#part_register').fadeIn(2000);
@@ -112,7 +104,7 @@ $(document).ready(function(){
 			
 	App.langs.SetCurrentLanguage('ru');
 */
-
+/*
 	Backbone.sync = function(method, model)
 	{		
        	App.utils.flow_ext('Backbone.sync fired');
@@ -146,7 +138,7 @@ $(document).ready(function(){
 			}
 		}
 	};
-
+*/
 	App.trigger('page_loaded');
 	App.utils.flow_ext('MainController: end');
 });

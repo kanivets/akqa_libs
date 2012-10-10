@@ -7,7 +7,8 @@ App.proto.views.title = App.proto.views._static.extend({
 			
 	render : function() {
 		App.utils.flow_ext(this.name + '.render');
-		document.title = this.model.GetPageTitle();
+		var part = App.router.GetCurrentPart();
+		document.title = App.langs.Get('app_name') + ' :: ' + App.langs.Get('title_' + (part == '' ? 'main' : part));
 		return this;
 	},	
 	
@@ -25,34 +26,25 @@ App.proto.views.header = App.proto.views._static.extend({
 			
 	events : {
 		'click a.link' : 'ChangePart',
-		'click a.langs' : 'ChangeLanguage',
-		'click button.signin' : 'SignIn'
+		'click a.langs' : 'ChangeLanguage'
 	},	
 			
 	render : function() {
 		App.utils.flow_ext(this.name + '.render');
 		var t = this.templateCompiled({
 
-			games_link : this.model.GetLink('games'),
-			friends_link : this.model.GetLink('friends'),
-			statistics_link : this.model.GetLink('statistics'),
+			games_link : App.router.BuildLink(null, 'games', App.router.GetAllParams()),
+			friends_link : App.router.BuildLink(null, 'friends', {}),
+			statistics_link : App.router.BuildLink(null, 'statistics', {}),
 
-			games_caption : this.model.GetCaption('games'),
-			friends_caption : this.model.GetCaption('friends'),
-			statistics_caption : this.model.GetCaption('statistics'),
+			games_caption : App.langs.Get('header_caption_games'),
+			friends_caption : App.langs.Get('header_caption_friends'),
+			statistics_caption : App.langs.Get('header_caption_statistics'),
 
-			//nav_elements: this.model.GetNavElements(), 
-			lang_elements: this.model.GetLanguages(), 
-			cur_language: this.model.GetCurrentLanguage(), 
-			cur_part : this.model.GetCurrentPart(),
+			cur_part : App.router.GetCurrentPart(),
 
-			home_link : App.router.BuildLink(null, 'games'),
-
-			isLogined : this.model.IsLogged(),
-			login_name : this.model.GetName(),
-			register_link : this.model.GetRegisterLink(),
-			register_caption : this.model.GetRegisterCaption()
-			});
+			home_link : App.router.BuildLink(null, 'games', {})
+		});
 			
 		this.$el.html(t);				
 		return this;
@@ -77,83 +69,11 @@ App.proto.views.header = App.proto.views._static.extend({
 		App.utils.flow_ext(this.name + '.ChangePart');	
 		e.preventDefault();
 		App.router.NavigateTo(e.currentTarget.getAttribute('href'));	
-	},
-	
-	SignIn : function(e) {
-		App.utils.flow_ext(this.name + '.SignIn');		
-		e.preventDefault();
-		App.router.NavigateToPart('signin');	
-	}
-});
-
-App.proto.views.register = App.proto.views._dynamic.extend({
-	name : 'RegisterView',
-	
-	events : {
-		'click #register_close' : 'OnClose', 
-		'click #register_clear' : 'OnClear', 
-		'click #register_submit' : 'OnSubmit'
-	},
-	
-	_Show : function() {	//internal use only - contains jquery level of element hiding  
-		App.utils.flow_ext(this.name + '._Show');
-		this._bIsVisible = true;			
-		this.$el.fadeIn(2000);		
-	},
-	
-	_Hide : function() {	//internal use only - contains jquery level of element hiding  
-		App.utils.flow_ext(this.name + '._Show');
-		this._bIsVisible = false;			
-		this.$el.fadeOut(400);		
-	},
-	
-	OnClose : function(e) {
-		App.utils.flow_ext(this.name + '.OnClose');
-		e.preventDefault();
-		App.router.NavigateTo('/');
-	},
-	
-	OnClear : function(e) {
-		App.utils.flow_ext(this.name + '.OnClear');
-		e.preventDefault();
-		$('input[type="text"], input[type="password"]', $('#register')).each(function(index, element) {
-			$(element).val('');	
-		});
-		
-		$('#register input#register_subscribe').attr('checked', 'checked');
-		$('#register input#register_agree').removeAttr('checked');
-	},
-	
-	OnSubmit : function(e) {
-		App.utils.flow_ext(this.name + '.OnSubmit');
-		
-		$('#register').validate(this.model.get('form_validation_attributes'));
-		e.preventDefault();
-		
-		if (!$('#register').valid()) return;
-	},	
-	
-	initialize : function(args) {
-		App.proto.views._dynamic.prototype.initialize.call(this, args);
-		App.utils.flow_ext(this.name + '.initialize');
-				
-		_.bindAll(this, 'OnClose', 'OnClear', 'OnSubmit', 'render');	
-	},
-	
-	render : function() {			
-		App.utils.flow_ext(this.name + '.render, visible: ' + this._bIsVisible);
-		if (!this._bIsVisible) return;
-		
-		this.$el.html(this.templateCompiled({
-							caption : this.model.GetCaption(),
-							login : this.model.GetLogin(),
-							name : this.model.GetName()
-		}));
 	}
 });
 
 
-
+/*
 App.proto.views.test = App.proto.views._dynamic.extend({
 	name : 'TestView',
 	
@@ -164,7 +84,7 @@ App.proto.views.test = App.proto.views._dynamic.extend({
 	},
 	
 	render : function() {			
-		App.utils.flow_ext(this.name + '.render, visible: ' + this._bIsVisible);
+		App.utils.flow_ext(this.name + '.render');
 		if (!this._bIsVisible) return;
 		
 		this.$el.html(this.templateCompiled({
@@ -172,9 +92,9 @@ App.proto.views.test = App.proto.views._dynamic.extend({
 		}));
 	}	
 });
+*/
 
-
-
+/*
 App.proto.views.gameList = App.proto.views._dynamic.extend({
 	name : 'GameListView',
 	_gameIconTemplate : null,
@@ -188,7 +108,7 @@ App.proto.views.gameList = App.proto.views._dynamic.extend({
 	initialize : function(args) {
 		App.proto.views._dynamic.prototype.initialize.call(this, args);	
 		App.utils.flow_ext(this.name + '.initialize');			
-		_.bindAll(this, 'render', 'PrevPage', 'NextPage', 'DrawIcons');	
+		_.bindAll(this, 'render', 'PrevPage', 'NextPage', 'DrawIcons', 'OnParamsChanged');	
 				
 		this._gameListUL = $('ul#games_list', this.$el);
 		this._gameIconTemplate = _.template(this._gameListUL.html().replace(/\&lt;\%/g, '<%').replace(/\%\&gt;/g, '%>'));			
@@ -199,43 +119,63 @@ App.proto.views.gameList = App.proto.views._dynamic.extend({
 				
 		var that = this;
 
-		App.on('changed_params_games', function() {
-			var nPage = App.router.GetParams('games', 'page');
-			if (!nPage) nPage = 1;
-			that.model.SetPage(nPage);
-
-			var sSort = App.router.GetParams('games', 'sort');
-			if (sSort)
-				that.model.SetSort(sSort);
-
-			that.render();
-		});
+		App.on('changed_params_games', this.OnParamsChanged);
 		
 		this.model.CalculatePages();
 	},
 	
 	render : function() {
 		
-		App.utils.log(this.name + '.render, visible: ' + this._bIsVisible);
+		App.utils.log(this.name + '.render');
 		if (!this._bIsVisible) return;
 
 		this.DrawIcons();		
-		this.$el.find('.page.prev').attr('href', App.router.BuildLink(null, null, {page : parseInt(this.model.GetCurrentPage()) - 1, sort : this.model.GetCurrentSort()}));
-		this.$el.find('.page.next').attr('href', App.router.BuildLink(null, null, {page : parseInt(this.model.GetCurrentPage()) + 1, sort : this.model.GetCurrentSort()}));
+
+		var aParams = App.router.GetAllParams('games');
+		var nPage = aParams['page'] ? parseInt(aParams['page'] : 1; 
+		var sSort = this.model.GetCurrentSort(); 
+
+		this.$el.find('.page.prev').attr('href', App.router.BuildLink(null, null, {page : nPage - 1, sort : this.model.GetCurrentSort()}));
+		this.$el.find('.page.next').attr('href', App.router.BuildLink(null, null, {page : nPage + 1, sort : this.model.GetCurrentSort()}));
 
 		this.$el.find('.views span').html(this.model.GetViewsCaption());
 	},
 	
+	OnParamsChanged : function() {
+		var nPage = App.router.GetParams('games', 'page');
+		if (nPage) {
+			that.model.SetPage(nPage);
+		}
+
+		var sSort = App.router.GetParams('games', 'sort');
+		if (sSort)
+			that.model.SetSort(sSort);
+
+		this.render();
+	},
+
 	DrawIcons : function() {	
 		App.utils.flow_ext(this.name + '.DrawIcons');
 
 		var that = this;
 		
 		this._gameListUL.html('');
-		var aData = this.model.GetCurrentGames(); 
+		
+		var searchString = App.router.GetParams('games', 'search');		
+		var aData = this.model.GetCurrentGames();
+
+		console.log(aData);
 
 		_.each(aData, function (e) {
-			if (!e) return;
+			if (!e) {
+				return;
+			}
+
+			var sGameName = e.GetName();
+			if (searchString && (sGameName.indexOf(searchString) == -1)) {
+				return;
+			}
+
 			
 			var gameIconSrc = that._gameIconTemplate({
 				game_id : e.GetGameID(), 
@@ -261,7 +201,7 @@ App.proto.views.gameList = App.proto.views._dynamic.extend({
 			
 			that._gameListUL.append(icon);
 		});	
-		
+
 		this.model.IsPrevExists() ? $('.page.prev', this.$el).show() : $('.page.prev', this.$el).hide();
 		this.model.IsNextExists() ? $('.page.next', this.$el).show() : $('.page.next', this.$el).hide();
 	},
@@ -278,6 +218,197 @@ App.proto.views.gameList = App.proto.views._dynamic.extend({
 		App.router.NavigateTo(e.currentTarget.getAttribute('href'));
 	}	
 });
+*/
+
+
+
+App.proto.views.games = App.proto.views._dynamic.extend({
+	name : 'GamesView',
+	_sorting : null, 
+	_searching : null, 
+	_list : null, 
+	_pagination : null, 
+
+	initialize : function (args) {		
+		App.proto.views._dynamic.prototype.initialize.call(this, args);	
+		App.utils.flow_ext(this.name + '.initialize');
+
+		this._sorting = new App.proto.views.games.sorting({el : this.$('#' + args.containerID + '_sorting')});
+		this._searching = new App.proto.views.games.searching({el : this.$('#' + args.containerID + '_searching')});
+		//this._list = new App.proto.views.games.list({el : this.$('#' + args.containerID + '_list')});
+		//this._pagination = new App.proto.views.games.pagination({el : this.$('#' + args.containerID + '_pagination')});
+
+		_.bindAll(this, 'render');
+	},
+
+	render : function() {		
+		if (!this._bIsVisible) return;
+		App.utils.flow_ext(this.name + '.render');
+	},
+
+	OnChangedParams : function(params) {		
+		if (!this._bIsVisible) {
+			return;
+		}
+		App.utils.flow_ext(this.name + '.OnChangedParams');		
+		params = params || {};
+
+		this._sorting.render();
+		this._sorting.SetSort(params.sort);
+
+		this._searching.render();
+	}
+});
+
+App.proto.views.games.sorting = App.proto.views._subview.extend({
+	name : 'GamesSortingView',
+	sPrevSort : '',
+
+	events : {
+		'click a' : 'ChangeSort'
+	},
+
+	initialize : function(args) {
+		App.proto.views._subview.prototype.initialize.call(this, args);	
+		App.utils.flow_ext(this.name + '.initialize');
+
+		_.bindAll(this, 'SetSort', 'ChangeSort', 'render');
+		this.render();
+		this.SetSort(App.router.GetParam('sort'));
+	},
+
+	render : function() {
+		App.utils.flow_ext(this.name + '.render');
+
+		var sSearch =  App.router.GetParam('search');
+
+		this.$el.html(this._templateCompiled({
+			sorting_featured_link : App.router.BuildLink(null, null, {sort : 'featured', search : sSearch}),
+			sorting_newest_link : App.router.BuildLink(null, null, {sort : 'newest', search : sSearch}),
+			sorting_rating_link : App.router.BuildLink(null, null, {sort : 'rating', search : sSearch}),
+			sorting_views_link : App.router.BuildLink(null, null, {sort : 'views', search : sSearch}),
+			sorting_votes_link : App.router.BuildLink(null, null, {sort : 'votes', search : sSearch}),
+
+			sorting_featured_caption : App.langs.Get('games_sorting_caption_featured'),
+			sorting_newest_caption : App.langs.Get('games_sorting_caption_newest'),
+			sorting_rating_caption : App.langs.Get('games_sorting_caption_rating'),
+			sorting_views_caption : App.langs.Get('games_sorting_caption_views'),
+			sorting_votes_caption : App.langs.Get('games_sorting_caption_votes')
+		}));
+
+	},
+
+	SetSort : function (sSort) {
+		App.utils.flow_ext(this.name + '.SetCurrentSort');
+		switch (sSort) {
+			case 'featured' :
+			case 'newest' :
+			case 'rating' :
+			case 'views' :
+			case 'votes' :
+				break;
+			default : sSort = 'featured';
+				break;
+		}
+
+		if (this.sPrevSort == sSort) {
+			return false;
+		}
+
+		this.$('a').removeClass('active');
+		this.$('#container_games_sorting_' + sSort).addClass('active');
+
+		return true;
+	},
+
+	ChangeSort : function (e) {
+		App.utils.flow_ext(this.name + '.ChangeSort');
+		e.preventDefault();
+
+		var aParams = App.router.GetAllParams();
+		App.router.NavigateTo(e.currentTarget.getAttribute('href'));
+	}
+});
+
+App.proto.views.games.searching = App.proto.views._subview.extend({
+	name : 'GamesSearchingView',
+
+	events : {
+		'keyup' : 'ChangeSearch'
+	},
+
+	initialize : function(args) {
+		App.proto.views._subview.prototype.initialize.call(this, args);	
+		App.utils.flow_ext(this.name + '.initialize');
+
+		_.bindAll(this, 'ChangeSearch', 'render');
+		this.render();
+	},
+
+	render : function() {
+		App.utils.flow_ext(this.name + '.render');
+		var sSearch = App.router.GetParam('search');
+		if (!sSearch) {
+			sSearch = '';
+		}
+		this.$el.val(sSearch);
+	},
+
+	ChangeSearch : function (e) {
+		App.utils.flow_ext(this.name + '.ChangeSearch');
+		var sSearch = _.escape(e.currentTarget.value);
+
+		var sSort = App.router.GetParam('sort');
+		App.router.NavigateTo(App.router.BuildLink(null, null, {sort : sSort ? sSort : null, search : sSearch ? sSearch : null}));
+	}
+});
+
+App.proto.views.games.list = App.proto.views._subview.extend({
+	name : 'GamesListView',
+	initialize : function(args) {
+		App.proto.views._subview.prototype.initialize.call(this, args);	
+		App.utils.flow_ext(this.name + '.initialize');
+	}
+});
+
+App.proto.views.games.pagination = App.proto.views._subview.extend({
+	name : 'GamesPagionationView',
+	initialize : function(args) {
+		App.proto.views._subview.prototype.initialize.call(this, args);	
+		App.utils.flow_ext(this.name + '.initialize');
+	}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 App.proto.views.stats = App.proto.views.stats || {};
@@ -389,7 +520,7 @@ App.proto.views.stats.horizontalStats = App.proto.views._dynamic.extend({
 	},
 
 	render : function() {			
-		App.utils.flow_ext(this.name + '.render, visible: ' + this._bIsVisible);
+		App.utils.flow_ext(this.name + '.render');
 		if (!this._bIsVisible) return;
 		
 		this.mostPlayedGirls.render();
@@ -444,7 +575,7 @@ App.proto.views.sorting = App.proto.views._dynamic.extend({
 	},	
 
 	render : function() {			
-		App.utils.log(this.name + '.render, visible: ' + this._bIsVisible);
+		App.utils.log(this.name + '.render');
 		if (!this._bIsVisible) return;
 		
 		this.$el.html(this._templateCompiled({
@@ -467,3 +598,81 @@ App.proto.views.sorting = App.proto.views._dynamic.extend({
 		//this.render();
 	}
 });
+
+
+App.proto.views.searchBar = App.proto.views._dynamic.extend({
+	name : 'SearchView', 
+	
+	events : {
+		'keyup' : 'OnKeyUp'
+	},
+
+	OnKeyUp : function(e) {
+		console.info(this.name + '.OnKeyUp()');
+		App.router.ClearParams();
+		App.router.NavigateTo(App.router.BuildLink(null, null, {search : e.currentTarget.value}));
+	},
+
+	initialize : function(args) {
+		App.proto.views._dynamic.prototype.initialize.call(this, args);	
+
+		App.utils.flow_ext(this.name + '.initialize');			
+		_.bindAll(this, 'render');	
+	},
+
+	OnChangedPart : function() {
+		App.utils.flow_core(this.name + '.OnChangedPart');	
+
+		var bIsOnCurrentPartVisible = this.visible_at_parts[App.router.GetCurrentPart()] == true;
+		if (this._bIsVisible && bIsOnCurrentPartVisible) {
+			console.log('SEARCH: i have not been rerender');	
+		} else {
+			this.SetVisibility(bIsOnCurrentPartVisible);			
+			this.render();	
+		}
+	}	
+});
+
+
+/*	
+App.proto.views.testAnimation = App.proto.views._dynamic.extend({
+	name : 'TestAnimationView', 
+	
+	_nCurFrame : 0,
+	_nCurMainIter : 200,
+	_nMaxFrames : 25,
+	_nSpeed : 25,
+	map : null,
+
+	initialize : function(args) {
+		App.proto.views._dynamic.prototype.initialize.call(this, args);	
+		App.utils.flow_ext(this.name + '.initialize');			
+		_.bindAll(this, 'render', 'DrawFrames');	
+
+		var that = this;
+		setInterval(function () {that.DrawFrames();}, that._nSpeed);
+	},
+
+	render : function() {
+
+	},	
+
+	DrawFrames : function () {
+		this._nCurFrame++;
+
+		if (this._nCurFrame >= this._nMaxFrames)
+			this._nCurFrame = 0;
+
+		var nTopPos = Math.floor(this._nCurFrame / 5);
+		var nLeftPos = this._nCurFrame % 5;
+
+		this._nCurMainIter --;
+		if (this._nCurMainIter < 0) {
+			this._nCurMainIter = 200;
+		}
+		console.log('Drawing frame: [' + (-nTopPos * 68) + '][' + (-nLeftPos * 68) + ']')
+		this.$('div').offset({top : 87 -nTopPos * 68, left : -nLeftPos * 68});
+
+	}
+});
+*/

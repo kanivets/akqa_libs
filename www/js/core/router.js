@@ -6,6 +6,8 @@ App.proto.routers._common = Backbone.Router.extend({
 	default_part : '',
 	current_part : '',
 	sDefaultNotFoundPartName : 'notfound',
+		
+	_aParams : {},
 	
 	GetCurrentPart : function() {
 		App.utils.flow_core('MainRouter.GetCurrentPart');	
@@ -14,52 +16,59 @@ App.proto.routers._common = Backbone.Router.extend({
 	
 	initialize : function() {
 		App.utils.flow_core('MainRouter.initialize');		
-		_.bindAll(this, 'GetCurrentPart', 'NavigateTo');
+		_.bindAll(this, 'GetCurrentPart', 'BuildLink', 'NavigateTo', 'ClearParams', 'SetParams', 'GetParams');
+
+		this.ClearParams();
 	},
 	
 	BuildLink : function(lang, part, customParams) {
 		App.utils.flow_core('MainRouter.BuildLink(' + lang + ', ' + part + ')');
 		
-		if (!lang || typeof(lang) != 'string') lang = App.langs.GetCurrentLanguage();
-		if (!part || typeof(part) != 'string') part = this.current_part;
-		if (part == '/') part = '';
+		if (!lang || typeof(lang) != 'string') {
+			lang = App.langs.GetCurrentLanguage();
+		}
+
+		if (!part || typeof(part) != 'string') {
+			part = this.current_part;
+		}
+
+		if (part == '/') {
+			part = '';
+		}
 
 		var sLink = '/' + lang + '/' + part;
-		var aParams = this.GetAllParams(part);
-		if (aParams)
-			for (var i in aParams)
-				if (!customParams || !customParams[i])
-					sLink += '/' + i + '/' + aParams[i];
-
-		for (var i in customParams)
-			sLink += '/' + i + '/' + customParams[i];
-
+		for (var i in customParams) {
+			if (customParams[i] != null) {
+				sLink += '/' + i + '/' + customParams[i];
+			}
+		}
 
 		return sLink;
 	},
-	
-	_aParams : {},
 
 	ClearParams : function(sPart) {
-		this._aParams[sPart] = {};
+		this._aParams = {};
 	},
  
-	SetParams : function(sPart, sIndex, sData) {
-		App.utils.flow_core('MainRouter.SetParams(' + sPart + ', ' + sIndex + ', ' + sData + ')');
-		this._aParams[sPart] = this._aParams[sPart] || {};
-		return this._aParams[sPart][sIndex] = sData;
+	SetParams : function(sIndex, sData) {
+		App.utils.flow_core('MainRouter.SetParams(' + sIndex + ', ' + sData + ')');
+
+		return this._aParams[sIndex] = sData;
 	},
 
-	GetAllParams : function(sPart) {
-		App.utils.flow_core('MainRouter.GetParams(' + sPart + ')');
-		return this._aParams[sPart];
+	GetAllParams : function() {
+		App.utils.flow_core('MainRouter.GetParams()');
+		return this._aParams;
 	},
 
-	GetParams : function(sPart, sIndex) {
-		App.utils.flow_core('MainRouter.GetParams(' + sPart + ', ' + sIndex + ')');
-		if (!this._aParams[sPart]) return null;
-		if (!this._aParams[sPart][sIndex]) return null;
-		return this._aParams[sPart][sIndex];
+	GetParam : function(sIndex) {
+		App.utils.flow_core('MainRouter.GetParams(' + sIndex + ')');
+	
+		if (!this._aParams[sIndex]) {
+			return null;
+		}
+
+		return this._aParams[sIndex];
 	},
 
 	NavigateTo : function (link, silent) {
@@ -70,15 +79,7 @@ App.proto.routers._common = Backbone.Router.extend({
 		return true;
 	},
 	
-	NavigateToPart : function (part) {
-		App.utils.flow_core('MainRouter.NavigateToPart(\'' + part + '\')');
-		
-		this.navigate(this.BuildLink(null, part), {trigger: true});
-		return true;
-	},
-
 	Init : function () {
 		App.utils.flow_core('MainRouter.Init');
-		_.bindAll(this, 'GetCurrentPart', 'BuildLink', 'NavigateTo', 'NavigateToPart', 'ClearParams', 'SetParams', 'GetParams')
 	}
 });
