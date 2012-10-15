@@ -423,6 +423,26 @@ App.proto.views.games.pagination = App.proto.views._subview.extend({
 	render : function() {
 		App.utils.flow_ext(this.name + '.render');
 
+
+		var aParams = App.router.GetAllParams();
+		var nPage = aParams && aParams.page ? aParams.page : null;
+		
+		aParams.page = (nPage ? parseInt(nPage) : 1) - 1;//prev
+		if (aParams.page == 1) {
+			aParams.page = null;
+		}		
+		var sLinkPrev = App.router.BuildLink(null, null, aParams);	
+		
+		aParams.page = (nPage ? parseInt(nPage) : 1) + 1;//prev
+		var sLinkNext = App.router.BuildLink(null, null, aParams);
+		
+		aParams.page = nPage;//prev
+
+		this.$el.html(this._templateCompiled({
+			game_prev_page_link : sLinkPrev,
+			game_next_page_link : sLinkNext
+		}));
+
 		if (this._model.IsPrevPageExists()) {
 			this.$el.find('.page.prev').show();
 		} else {
@@ -434,19 +454,10 @@ App.proto.views.games.pagination = App.proto.views._subview.extend({
 		} else {
 			this.$el.find('.page.next').hide();
 		}
-
-		var aParams = App.router.GetAllParams();
-		aParams.page = 1;
-		aParams.page = 1;
-
-		this.$el.html(this._templateCompiled({
-			game_prev_page_link : App.router.BuildLink(null, null, aParams),
-			game_next_page_link : App.router.BuildLink(null, null, aParams)
-		}));
 	},
 
 	ChangePage : function(e) {
-		App.utils.flow_ext(this.name + '.ChangePage');
+		App.utils.log(this.name + '.ChangePage');
 		e.preventDefault();
 		App.router.NavigateTo(e.currentTarget.getAttribute('href'));
 	}

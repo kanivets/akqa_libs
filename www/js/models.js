@@ -253,8 +253,8 @@ App.proto.models.games = Backbone.Collection.extend({
 
 		if (sCacheIndex && this._aCachedData[sCacheIndex]) {
 			App.utils.debug('Got game list from cache \'' + sCacheIndex + "'");
-			this._nTotalPages = Math.ceil(this._aCachedData[sCacheIndex].length / this.itemsPerPage);
-			return this._aCachedData[sCacheIndex];
+			this._nTotalPages = this._aCachedData[sCacheIndex].totalPages;
+			return this._aCachedData[sCacheIndex].data;
 		}
 
 		var aFoundGames = null;
@@ -300,7 +300,9 @@ App.proto.models.games = Backbone.Collection.extend({
 			aRet.push(aSorted[i]);
 		}
 
-		this._aCachedData[sCacheIndex] = aRet;
+		this._aCachedData[sCacheIndex] = {};
+		this._aCachedData[sCacheIndex].data = aRet;
+		this._aCachedData[sCacheIndex].totalPages = this._nTotalPages;
 		return aRet;
 	}	
 });
