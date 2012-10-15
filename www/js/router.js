@@ -29,7 +29,7 @@ App.proto.router = App.proto.routers._common.extend({
 			this.current_part = sNewPart;
 			this.trigger('part_changed', sNewPart);
 			
-			App.utils.debug('Changed part to: ' + this.current_part);
+			App.utils.info('Changed part to: ' + this.current_part);
 		}
 
 
@@ -45,7 +45,7 @@ App.proto.router = App.proto.routers._common.extend({
 				if (!aCurParams || !aCurParams[i] || (aCurParams[i] != aParams[i+1])) {
 					bIsParamsChanged = true;
 				}
-				this.SetParams(aParams[i], aParams[i+1]);
+				this.SetParams(_.escape(aParams[i]), _.escape(aParams[i+1]));
 			}			
 		} else {
 			bIsParamsChanged = !!aCurParams;
@@ -53,7 +53,7 @@ App.proto.router = App.proto.routers._common.extend({
 
 		if (bIsParamsChanged) {
 			this.trigger('params_changed', this.GetAllParams());
-			App.utils.debug('Changed params');
+			App.utils.info('Changed params');
 		}
 
 	},

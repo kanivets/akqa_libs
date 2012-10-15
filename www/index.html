@@ -80,15 +80,9 @@
           <!-- <a class="drop-down link" href="<%=home_link%>">gattoo</a> -->
         </header>
 
-        <!--
-        <div id="container_testAnimation" style="width: 68px; height: 68px; top: 200px; overflow: hidden;">
-            <div style=" position: relative; left : 0px; top: 0px;"><img src="/img/test_animation.jpg" /></div>
-        </div>
-        -->
-
         <div class="body">
         	<div class="column-left hidden" id="container_games">
-                <input type="text" class="search" value="" placeholder="search" id="container_games_searching"/>
+                <input type="text" class="search" value="" placeholder="search" id="container_games_searching"/> 
         		<div class="games-navigation" id="container_games_sorting">
         			<div class="sorting">
                         <a id="container_games_sorting_featured" href="<%=sorting_featured_link%>"><%=sorting_featured_caption%></a>
@@ -98,23 +92,26 @@
                         <a id="container_games_sorting_votes" href="<%=sorting_votes_link%>"><%=sorting_votes_caption%></a>
         			</div>
         		</div>
+                <div class="clear"></div>
 
         		<section id="container_games_list">
-					<!--<p id="container_games_pagination"><a class="page prev" href="<%=list_prev_page_link%>"> < PREV</a> | <a class="page next" href="<%=list_next_page_link%>">NEXT ></a></p>
-					<ul id="container_games_list">
-						<li class="game" data-gameid="<%=game_id%>">
-							<div class="img"> 
-								<img class="logo" alt="<%=game_name%>" title="<%=game_name%>" />	
-							</div>
-							<div class="name">
-								<%=game_name%>
-							</div>
-							<div class="rating" data-rating="<%=game_rating%>" data-gameID="<%=game_id%>"></div>
-							<div class="views"><strong><%=game_views%></strong> <span>views</span></div>
-						</li>	
-					</ul>
-                        -->				
+					<ul class="games-list">
+						<%for (var game in game_list) {%>
+							<li class="game" data-gameid="<%=game_list[game].GetID()%>">
+								<div class="img"> 
+									<img class="logo" alt="<%=game_list[game].GetName()%>" title="<%=game_list[game].GetName()%>" data-src="<%='/img/game_icons/' + game_list[game].GetImg()%>">	
+								</div>
+								<div class="name">
+									<%=game_list[game].GetName()%>
+								</div>
+								<div class="rating" data-rating="<%=game_list[game].GetRating()%>" data-gameid="<%=game_list[game].GetID()%>"></div>
+								<div class="views"><strong><%=game_list[game].GetViews()%></strong> <span><%=game_caption_views%></span></div>
+							</li>
+						<%}%>	
+					</ul>                        				
 				</section>
+					
+				<p id="container_games_pagination"><a class="page prev" href="<%=game_prev_page_link%>"> PREV</a> | <a class="page next" href="<%=game_prev_page_link%>">NEXT</a></p>
         	</div>
         	<div class="column-right">
 

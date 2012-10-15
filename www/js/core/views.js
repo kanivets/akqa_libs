@@ -119,10 +119,14 @@ App.proto.views._dynamic = Backbone.View.extend({
 });
 
 App.proto.views._subview = Backbone.View.extend({
-	_templateCompiled : null, 
+	_templateCompiled : null,
+	_model : null,
+
 	initialize : function(args) {
 		App.utils.flow_core(this.name + '(_subview).initialize');		
 		_.bindAll(this, 'render', 'OnChangedParams');
+
+		this._model = args.model || null;
 
 		var t = this.$el.html().replace(/\&lt;\%/g, '<%').replace(/\%\&gt;/g, '%>');
 		this._templateCompiled = _.template(t);		

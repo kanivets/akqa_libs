@@ -95,14 +95,14 @@ input.search {
 	margin-right: 40px;
 }
 
-#games_list {
+.games-list {
 	overflow: hidden;
 	list-style-type: none;
 	padding: 0;
-	margin: 0;
+	margin: 10px 0 0 0;
 }
 
-#games_list li {
+.games-list li {
 	width: 180px;
 	float: left;
 	padding: 0;
@@ -112,7 +112,7 @@ input.search {
 	overflow: hidden;
 }
 
-#games_list .img {
+.games-list .img {
 	width: 150px;
 	height: 86px;
 	padding: 10px;
@@ -120,13 +120,13 @@ input.search {
 	background-color: #f8f8f8;
 }
 
-#games_list .img:hover {
+.games-list .img:hover {
 	border: 1px solid #ea7c39;
 	background-color: #f1b18a;
 	cursor: pointer;
 }
 
-#games_list .name {
+.games-list .name {
 	width: 150px;
 	white-space: nowrap;
 	overflow: hidden;
@@ -140,14 +140,14 @@ input.search {
 	-o-text-overflow: ellipsis
 }
 
-#games_list .rating {
+.games-list .rating {
 	float: left;
 	width: 65px;
 	margin-left: 10px;	
 
 }
 
-#games_list .views {
+.games-list .views {
 	margin-left: 65px;
 	text-align: right;
 	font-size: 10px;

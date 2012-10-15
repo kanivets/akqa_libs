@@ -24,15 +24,24 @@ $(document).ready(function(){
 	App.views.header = new App.proto.views.header({el : "header"});
 	
 	
-	App.models.gameList = new App.proto.models.gameList({
+	App.models.games = new App.proto.models.games({
 								itemsPerPage : 9,
 								model : App.proto.models.gameIcon});
-	App.models.gameList.reset();
+	App.models.games.reset();
 	for (var i in App.data.games)
-		App.models.gameList.add(new App.proto.models.gameIcon({gameData : App.data.games[i]}), {silent: true});
+		App.models.games.add(new App.proto.models.gameIcon({gameData : App.data.games[i]}), {silent: true});
 	
-	App.views.gameList = new App.proto.views.games({
-								containerID : 'container_games', 
+	App.views.games = new App.proto.views.games({
+								containerID : 'container_games',
+								model : App.models.games,
+								subviews : {
+									containerIDs : {
+										sorting : 		'container_games_sorting',
+										searching : 	'container_games_searching',
+										list : 			'container_games_list',
+										pagination : 	'container_games_pagination',
+									}	
+								},
 								parts : {'games' : true}});
 
 	App.views.horizontalStats = new App.proto.views.stats.horizontalStats({

@@ -229,14 +229,14 @@ App.proto.views.games = App.proto.views._dynamic.extend({
 	_list : null, 
 	_pagination : null, 
 
-	initialize : function (args) {		
+	initialize : function (args) {
 		App.proto.views._dynamic.prototype.initialize.call(this, args);	
 		App.utils.flow_ext(this.name + '.initialize');
 
-		this._sorting = new App.proto.views.games.sorting({el : this.$('#' + args.containerID + '_sorting')});
-		this._searching = new App.proto.views.games.searching({el : this.$('#' + args.containerID + '_searching')});
-		//this._list = new App.proto.views.games.list({el : this.$('#' + args.containerID + '_list')});
-		//this._pagination = new App.proto.views.games.pagination({el : this.$('#' + args.containerID + '_pagination')});
+		this._sorting = new App.proto.views.games.sorting({el : this.$('#' + args.subviews.containerIDs.sorting)});
+		this._searching = new App.proto.views.games.searching({el : this.$('#' + args.subviews.containerIDs.searching)});
+		this._list = new App.proto.views.games.list({el : this.$('#' + args.subviews.containerIDs.list), model : this.model});
+		this._pagination = new App.proto.views.games.pagination({el : this.$('#' + args.subviews.containerIDs.pagination), model : this.model});
 
 		_.bindAll(this, 'render');
 	},
@@ -257,6 +257,9 @@ App.proto.views.games = App.proto.views._dynamic.extend({
 		this._sorting.SetSort(params.sort);
 
 		this._searching.render();
+
+		this._list.render();
+		this._pagination.render();
 	}
 });
 
@@ -368,14 +371,84 @@ App.proto.views.games.list = App.proto.views._subview.extend({
 	initialize : function(args) {
 		App.proto.views._subview.prototype.initialize.call(this, args);	
 		App.utils.flow_ext(this.name + '.initialize');
+		_.bindAll(this, 'render');
+
+		this.render();
+	},
+
+	render : function() {
+		App.utils.flow_ext(this.name + '.render');
+
+		var aGames = this._model.GetGames();
+
+		this.$el.html(this._templateCompiled({
+			game_list : aGames,
+			game_caption_views : App.langs.Get('game_caption_views')
+		}));
+
+		this.$el.find('img').each(function(el) {
+			$(this).attr('src', $(this).attr('data-src'));
+		});
+
+		this.$el.find('.rating').jRating({
+				showRateInfo : true, 
+				bigStarsPath : '/img/jRating_star_big.png',
+				smallStarsPath : '/img/jRating_star_small.png',
+				phpPath : '',
+				type : 'small',
+				length : 5,
+				decimalLength : 1,
+				rateMax : 5,
+				isDisabled : true,
+				onSuccess : function(){}
+			});
 	}
 });
 
 App.proto.views.games.pagination = App.proto.views._subview.extend({
 	name : 'GamesPagionationView',
+
+	events : {
+		'click a' : 'ChangePage' 
+	},
+
 	initialize : function(args) {
 		App.proto.views._subview.prototype.initialize.call(this, args);	
 		App.utils.flow_ext(this.name + '.initialize');
+		_.bindAll(this, 'render');
+
+		this.render();
+	},
+
+	render : function() {
+		App.utils.flow_ext(this.name + '.render');
+
+		if (this._model.IsPrevPageExists()) {
+			this.$el.find('.page.prev').show();
+		} else {
+			this.$el.find('.page.prev').hide();
+		}
+
+		if (this._model.IsNextPageExists()) {
+			this.$el.find('.page.next').show();
+		} else {
+			this.$el.find('.page.next').hide();
+		}
+
+		var aParams = App.router.GetAllParams();
+		aParams.page = 1;
+		aParams.page = 1;
+
+		this.$el.html(this._templateCompiled({
+			game_prev_page_link : App.router.BuildLink(null, null, aParams),
+			game_next_page_link : App.router.BuildLink(null, null, aParams)
+		}));
+	},
+
+	ChangePage : function(e) {
+		App.utils.flow_ext(this.name + '.ChangePage');
+		e.preventDefault();
+		App.router.NavigateTo(e.currentTarget.getAttribute('href'));
 	}
 });
 
@@ -599,7 +672,7 @@ App.proto.views.sorting = App.proto.views._dynamic.extend({
 	}
 });
 
-
+/*
 App.proto.views.searchBar = App.proto.views._dynamic.extend({
 	name : 'SearchView', 
 	

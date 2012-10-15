@@ -178,20 +178,20 @@ App.proto.models.gameIcon = Backbone.Model.extend({
 	
 	idAttribute : 'gameID',
 	
-	GetGameID : function() { return this.get('gameData').id; },
+	GetID : function() { return this.get('gameData').id; },
+	GetName : function() { return this.get('gameData').name; },
 	GetRating : function() { return this.get('gameData').rating; },
 	GetFeaturedIndex : function() { return this.get('gameData').featured_index; },
-	GetPlays : function() { return this.get('gameData').plays; },
-	GetName : function() { return this.get('gameData').name; },
-	GetImgSrc : function() { return '/img/game_icons/' + this.get('gameData').id + '.' + this.get('gameData').pic_ext; },
+	GetViews : function() { return this.get('gameData').views; },
+	GetImg : function() { return this.get('gameData').id + '.' + this.get('gameData').pic_ext; },
 	
 	initialize : function(options) {		
 		App.utils.flow_ext(this.name + '.initialize');
-		_.bindAll(this, 'GetRating', 'GetGameID', 'GetPlays', 'GetName', 'GetImgSrc');	
+		_.bindAll(this, 'GetRating', 'GetID', 'GetViews', 'GetName', 'GetImg', 'GetFeaturedIndex');	
 	}
 });
 
-App.proto.models.gameList = Backbone.Collection.extend({
+App.proto.models.games = Backbone.Collection.extend({
 	name : 'GameListCollection',
 
 	itemsPerPage : 9,
@@ -204,109 +204,105 @@ App.proto.models.gameList = Backbone.Collection.extend({
 
 	_sCurrentSort : 'featured',
 
-	_aPagedData : {},
+	_aCachedData : {},
 
-	GetViewsCaption : function () {return App.langs.Get(this.defaults.lang_prefix + '_caption_views')},
-
-	GetByGameID : function(gameID) { return this.get(gameID); },
-	GetMaxPages : function () {return this._nMaxPages;},
-	GetCurrentPage : function () {return this._nCurrentPage;},
-	IsPrevExists : function () {return this._nCurrentPage > 1},
-	IsNextExists : function () {return this._nCurrentPage < this._nTotalPages},
-	
-	CalculatePages : function() {
-		App.utils.flow_ext(this.name + '.CalculatePages');
-		this._nTotalPages = Math.ceil(this.models.length / this.itemsPerPage);
-	},
+	initialize : function(options) {		
+		App.utils.flow_ext(this.name + '.initialize');
+		_.bindAll(this,'GetGames', 'GetTotalPages', 'IsPrevPageExists', 'IsNextPageExists');
 		
-	SetPage : function(nPage) {
-		App.utils.flow_ext(this.name + '.SetPage(' + nPage +')');
-		if (nPage < 1) return false;
-		if (nPage > this._nTotalPages) return false;
-		
-		this._nCurrentPage = nPage;
-		App.router.SetParams('games', 'page', nPage);
-		return true; 
+		if (options) {
+			if (options.itemsPerPage) this.itemsPerPage = options.itemsPerPage;
+		}	
 	},
-	
-	SetNextPage : function () {return this.SetPage(this._nCurrentPage + 1);},
-	SetPrevPage : function () {return this.SetPage(this._nCurrentPage - 1);}, 
-	
-	GetCurrentGames : function(bIsUsingCache) {
-		App.utils.flow_ext(this.name + '.GetGamesPerPage(' + this._sCurrentSort + ', ' + this._nCurrentPage +')');
 
-		if (this._aPagedData[this._sCurrentSort] && this._aPagedData[this._sCurrentSort][this._nCurrentPage]) {
-			return this._aPagedData[this._sCurrentSort][this._nCurrentPage]; 
+	IsPrevPageExists : function(aParams) {
+		App.utils.flow_ext(this.name + '.IsPrevPageExists');
+		if (!aParams) {
+			aParams = App.router.GetAllParams();
 		}
-		
-		var that = this;
-		var aSorted = _.sortBy(this.models, function(el) {
-			switch (that._sCurrentSort) {
+
+		var nCurPage = parseInt(aParams.page) || 1;
+		return nCurPage > 1; 
+	},
+
+	IsNextPageExists : function(aParams) {
+		App.utils.flow_ext(this.name + '.IsNextPageExists');
+		if (!aParams) {
+			aParams = App.router.GetAllParams();
+		}
+
+		var nCurPage = parseInt(aParams.page) || 1;
+		return nCurPage < this._nTotalPages; 
+	},
+
+	GetTotalPages : function(aParams) {	
+		App.utils.flow_ext(this.name + '.GetTotalPages');	
+		return this._nTotalPages;
+	},
+
+	GetGames : function(aParams) {
+		App.utils.flow_ext(this.name + '.GetGames');
+		if (!aParams) {
+			aParams = App.router.GetAllParams();
+		}
+
+		var sCacheIndex = '';
+		for (var i in aParams) {
+			sCacheIndex += '/' + i + '/' + aParams[i];
+		}
+
+		if (sCacheIndex && this._aCachedData[sCacheIndex]) {
+			App.utils.debug('Got game list from cache \'' + sCacheIndex + "'");
+			this._nTotalPages = Math.ceil(this._aCachedData[sCacheIndex].length / this.itemsPerPage);
+			return this._aCachedData[sCacheIndex];
+		}
+
+		var aFoundGames = null;
+
+		if (aParams.search) {
+			var aFoundGames = _.filter(this.models, function(el) {
+				return el.GetName().toLowerCase().indexOf(aParams.search.toLowerCase()) == 0;
+			});
+		} else {
+			aFoundGames = this.models;
+		}		
+
+		var aSorted = _.sortBy(aFoundGames, function(el) {
+			switch (aParams.sort) {
 				case 'featured' : return -el.GetFeaturedIndex();
-				case 'newest' : return -el.GetGameID();
+				case 'newest' : return -el.GetID();
 				case 'rating' : return -el.GetRating();
-				case 'views' : return -el.GetPlays();
-				case 'votes' : return -el.GetPlays() / el.GetRating();
+				case 'views' : return -el.GetViews();
+				case 'votes' : return -el.GetViews() / (el.GetRating() ? el.GetRating() : 1);
 				default : return 0;
 			}
 		});
 
+
+		var nTotalElements = aSorted.length;
+
+		this._nCurrentPage = parseInt(aParams.page) || 1;
+		this._nTotalPages = Math.ceil(nTotalElements / this.itemsPerPage);
+		if (this._nCurrentPage < 0 ) {
+			this._nCurrentPage = 1;
+		}
+
+		if (this._nCurrentPage > this._nTotalPages ) {
+			this._nCurrentPage = this._nTotalPages;
+		}
+
 		var aRet = [];
-		var nStart = (this._nCurrentPage - 1) * this.itemsPerPage;
-		var nEnd = this._nCurrentPage * this.itemsPerPage;
-		
-		if (this.models.length < nStart) return [null];
-		if (this.models.length < nEnd) nEnd = this.models.length;					
-		for (var i = nStart; i < nEnd; i++) {
+		for (var i = (this._nCurrentPage - 1) * this.itemsPerPage; i < this._nCurrentPage * this.itemsPerPage; i++) {
+			if (!aSorted[i]) {
+				break;
+			}
+
 			aRet.push(aSorted[i]);
 		}
-			
-		if (!this._aPagedData[this._sCurrentSort]) {
-			this._aPagedData[this._sCurrentSort] = {};
-		}
 
-		this._aPagedData[this._sCurrentSort][this._nCurrentPage] = aRet;
+		this._aCachedData[sCacheIndex] = aRet;
 		return aRet;
-	},
-	
-	GetCurrentSort : function () {
-		App.utils.flow_ext(this.name + '.GetCurrentSort()');
-		return this._sCurrentSort;
-	},
-
-	SetSort : function (sSort) {
-		App.utils.flow_ext(this.name + '.SetCurrentSort(' + sSort +')');
-
-		if (this._sCurrentSort == sSort) return;
-
-		switch (sSort) {
-			case 'featured' :
-			case 'newest' : 
-			case 'rating' : 
-			case 'views' : 
-			case 'votes' : 
-				this._sCurrentSort = sSort;
-				break;
-			default :
-				this._sCurrentSort = 'featured';
-				break;
-		}
-
-		App.router.SetParams('games', 'sort', this._sCurrentSort);
-		this.SetPage(1);
-	},
-
-	initialize : function(options) {		
-		App.utils.flow_ext(this.name + '.initialize');
-		_.bindAll(this, 'GetByGameID', 'GetMaxPages', 'GetCurrentPage', 'IsPrevExists', 'IsNextExists', 'SetPage', 'SetNextPage', 'SetPrevPage', 'GetCurrentGames', 'GetCurrentSort', 'SetSort');
-		
-		if (options) {
-			if (options.itemsPerPage) this.itemsPerPage = options.itemsPerPage;
-		}
-
-		this._nCurrentPage = App.router.GetParam('page') || 1;	
-	}
-	
+	}	
 });
 
 

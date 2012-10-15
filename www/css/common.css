@@ -28,7 +28,7 @@ nav a.langs.ru { background: url("../img/flag_ru.png") no-repeat; }
 nav a.langs.es { background: url("../img/flag_es.png") no-repeat; }
 
 
-/**/
+/*
 #container_register > div.background {
 	position: fixed;
 	top : 0;
@@ -95,3 +95,4 @@ nav a.langs.es { background: url("../img/flag_es.png") no-repeat; }
 
 #container_horizontalStats .raphael_canvas {
 }
+*/
