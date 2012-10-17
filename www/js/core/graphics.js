@@ -9,9 +9,18 @@ App.graphics.wrappers.raphael = (function() {
 
 	var that = this;
 	return {
+		GetElement : function(sIndex) {
+			return that._aElements[sIndex] || null;
+		},
+
+		SetViewBox : function(toX, toY, bIsFit) {
+			return that._handler.setViewBox(0, 0, toX, toY);
+		},
+
 		PreparePaper : function (sContainerID, w, h) {
 			that._handler = Raphael(document.getElementById(sContainerID), w, h); 
 			that._handler.clear();
+
 			return that;
 		},
 
@@ -54,7 +63,7 @@ App.graphics.wrappers.raphael = (function() {
 			return that;
 		},
 
-		DrawMap : function (sMinColor, sMaxColor, aCountries, aData, sStrokeColor) {
+		DrawMap : function (sMinColor, sMaxColor, aCountries, aData, sStrokeColor, name) {
 			var minR = parseInt(sMinColor.substr(1, 2), 16);
 			var minG = parseInt(sMinColor.substr(3, 2), 16);
 			var minB = parseInt(sMinColor.substr(4, 2), 16);
@@ -80,14 +89,20 @@ App.graphics.wrappers.raphael = (function() {
 
 
 				that._handler.path(App.data.map[i]).attr({					
-					stroke: sStrokeColor,
-					fill : sFill,
-					"stroke-width": .5,
-					"stroke-linejoin": "round"
+					'stroke': sStrokeColor,
+					'fill' : sFill,
+					'stroke-width' : .5,
+					'stroke-linejoin' : 'round'
 				});		
 			}
 
-			that._handler.setViewBox(0, 0, 1000, 250);
+			return that;
+		},
+
+		DrawChart : function(cx, cy, nRadius, aData, nTotalVal, attr, name) {
+			var el = that._handler.pieChart(cx, cy, nRadius, aData, nTotalVal, attr);
+			that._aElements[name ? name : that._nInternalID++] = el;
+			return that;		
 		}
 	};
 });

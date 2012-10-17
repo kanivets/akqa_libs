@@ -19,7 +19,7 @@ $(document).ready(function(){
 	App.router = new App.proto.router();
 	App.router.default_part = 'games';
 	Backbone.history.start({pushState : true});
-		
+	
 	App.views.title = new App.proto.views.title({el : "title"});	
 	App.views.header = new App.proto.views.header({el : "header"});
 	
@@ -39,7 +39,7 @@ $(document).ready(function(){
 										sorting : 		'container_games_sorting',
 										searching : 	'container_games_searching',
 										list : 			'container_games_list',
-										pagination : 	'container_games_pagination',
+										pagination : 	'container_games_pagination'
 									}	
 								},
 								parts : {'games' : true}});
@@ -53,6 +53,12 @@ $(document).ready(function(){
 									containerID : 'container_worldMapStats', 
 									parts : {'games' : true}
 								});
+
+	App.views.gamesPlayedChartStats = new App.proto.views.stats.gamesPlayedChartStats({
+									containerID : 'container_gamesPlayedChartStats', 
+									parts : {'games' : true}
+								});
+
 /*
 	App.views.testAnimation = new App.proto.views.testAnimation({
 									containerID : 'container_testAnimation', 

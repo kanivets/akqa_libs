@@ -8,7 +8,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 7,
 		rating: 3.8,
-		views : 1009
+		plays : 1009
 	},
 			
 	{
@@ -17,7 +17,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 6,
 		rating: 3.5,
-		views : 1214
+		plays : 1214
 	},
 			
 	{	
@@ -26,7 +26,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 3,
 		rating: 2.2,
-		views : 819
+		plays : 819
 	},
 			
 	{	
@@ -35,7 +35,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 4,
 		rating: 2.9,
-		views : 1124
+		plays : 1124
 	},
 			
 	{	
@@ -44,7 +44,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 5,
 		rating: 2.5,
-		views : 929
+		plays : 929
 	},
 				
 	{
@@ -53,7 +53,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 7,
 		rating: 4.2,
-		views : 1434
+		plays : 1434
 	},
 				
 	{
@@ -62,7 +62,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 8,
 		rating: 4.4,
-		views : 1539
+		plays : 1539
 	},
 		
 	{
@@ -71,7 +71,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 9,
 		rating: 5.0,
-		views : 2244
+		plays : 2244
 	},
 				
 	{
@@ -80,7 +80,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 1,
 		rating: 1.4,
-		views : 849
+		plays : 849
 	},
 				
 	{
@@ -89,7 +89,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 2,
 		rating: 1.1,
-		views : 354
+		plays : 354
 	},
 				
 	{
@@ -98,7 +98,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 4,
 		rating: 2.9,
-		views : 962
+		plays : 962
 	},
 				
 	{
@@ -107,7 +107,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 7,
 		rating: 3.3,
-		views : 1564
+		plays : 1564
 	},
 				
 	{
@@ -116,7 +116,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 6,
 		rating: 3.8,
-		views : 1169
+		plays : 1169
 	},
 				
 	{
@@ -125,7 +125,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 8,
 		rating: 4.1,
-		views : 1274
+		plays : 1274
 	},
 				
 	{
@@ -134,7 +134,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 9,
 		rating: 4.4,
-		views : 1179
+		plays : 1179
 	},
 				
 	{
@@ -143,7 +143,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 7,
 		rating: 4.1,
-		views : 1084
+		plays : 1084
 	},
 				
 	{
@@ -152,7 +152,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 5,
 		rating: 3.3,
-		views : 889
+		plays : 889
 	},
 				
 	{
@@ -161,7 +161,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 4,
 		rating: 3.7,
-		views : 942
+		plays : 942
 	},
 				
 	{
@@ -170,7 +170,7 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 6,
 		rating: 4.1,
-		views : 1399
+		plays : 1399
 	},
 				
 	{
@@ -179,6 +179,6 @@ App.data.games = [
 		pic_ext : 'jpg',
 		featured_index: 8,
 		rating: 4.5,
-		views : 1104
+		plays : 1104
 	}
 ];

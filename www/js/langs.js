@@ -44,6 +44,8 @@ var Languator = {
 		games_sorting_caption_views  :{en : 'Views', ru : 'Просмотры'},
 		games_sorting_caption_votes  :{en : 'Votes', ru : 'Голоса'},
 
+		stats_charts_topPlayed_players  : {en : 'players', ru : 'игроков'},
+
 		unknown : '...'
 	},
 	

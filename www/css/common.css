@@ -1,10 +1,7 @@
-div#qunit {margin-top: 5em;}
+
+/*div#qunit {margin-top: 5em;}
 
 div.clear {clear: both;}
-
-.hidden {
-	display: none;
-}
 
 
 nav {margin: 1em 1em;} 
@@ -28,7 +25,6 @@ nav a.langs.ru { background: url("../img/flag_ru.png") no-repeat; }
 nav a.langs.es { background: url("../img/flag_es.png") no-repeat; }
 
 
-/*
 #container_register > div.background {
 	position: fixed;
 	top : 0;

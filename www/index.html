@@ -27,6 +27,7 @@
         <script src="/js/libs/backbone.js"></script>
         <script src="/js/libs/jquery.validate.js"></script>
         <script src="/js/libs/raphael.js"></script>
+        <script src="/js/libs/raphael.ext.js"></script>
         <script src="/js/libs/jRating.js"></script>
         <script src="/js/libs/md5.js"></script>
         
@@ -53,7 +54,7 @@
         <!--
         
         <script src="/js/libs/QUnit.js"></script>
-       	<script src="/js/_unittests/unittests_common.js"></script>
+        <script src="/js/_unittests/unittests_common.js"></script>
         <script src="/js/_unittests/unittests_bebrainy.js"></script>   
         
         -->
@@ -68,8 +69,8 @@
 
 
 
-        <header>
-          <a href="<%=home_link%>" class='link'><img src="/img/logo.png" alt="Be Brainy" /></a>
+        <header class="border-bottom">
+          <a href="<%=home_link%>" class='link'><img src="/img /logo.png" alt="Be Brainy" /></a>
           <nav>
             <ul>
               <li><a href="<%=games_link%>" class="link<%=cur_part == 'games' ? ' active' : ''%>"><%=games_caption%></a></li>
@@ -80,93 +81,102 @@
           <!-- <a class="drop-down link" href="<%=home_link%>">gattoo</a> -->
         </header>
 
-        <div class="body">
-        	<div class="column-left hidden" id="container_games">
+        <div class="body border-bottom">
+            <div class="column-left hidden" id="container_games">
                 <input type="text" class="search" value="" placeholder="search" id="container_games_searching"/> 
-        		<div class="games-navigation" id="container_games_sorting">
-        			<div class="sorting">
+                <div class="games-navigation" id="container_games_sorting">
+                    <div class="sorting">
                         <a id="container_games_sorting_featured" href="<%=sorting_featured_link%>"><%=sorting_featured_caption%></a>
                         <a id="container_games_sorting_newest" href="<%=sorting_newest_link%>"><%=sorting_newest_caption%></a>
                         <a id="container_games_sorting_rating" href="<%=sorting_rating_link%>"><%=sorting_rating_caption%></a>
                         <a id="container_games_sorting_views" href="<%=sorting_views_link%>"><%=sorting_views_caption%></a>
                         <a id="container_games_sorting_votes" href="<%=sorting_votes_link%>"><%=sorting_votes_caption%></a>
-        			</div>
-        		</div>
+                    </div>
+                </div>
                 <div class="clear"></div>
 
-        		<section id="container_games_list">
-					<ul class="games-list">
-						<%for (var game in game_list) {%>
-							<li class="game" data-gameid="<%=game_list[game].GetID()%>">
-								<div class="img"> 
-									<img class="logo" alt="<%=game_list[game].GetName()%>" title="<%=game_list[game].GetName()%>" data-src="<%='/img/game_icons/' + game_list[game].GetImg()%>">	
-								</div>
-								<div class="name">
-									<%=game_list[game].GetName()%>
-								</div>
-								<div class="rating" data-rating="<%=game_list[game].GetRating()%>" data-gameid="<%=game_list[game].GetID()%>"></div>
-								<div class="views"><strong><%=game_list[game].GetViews()%></strong> <span><%=game_caption_views%></span></div>
-							</li>
-						<%}%>	
-					</ul>                        				
-				</section>
-					
-				<p id="container_games_pagination"><a class="page prev" href="<%=game_prev_page_link%>"> PREV</a> | <a class="page next" href="<%=game_next_page_link%>">NEXT</a></p>
-        	</div>
-        	<div class="column-right">
+                <section id="container_games_list">
+                    <ul class="games-list">
+                        <%for (var game in game_list) {%>
+                            <li class="game" data-gameid="<%=game_list[game].GetID()%>">
+                                <div class="img"> 
+                                    <img class="logo" alt="<%=game_list[game].GetName()%>" title="<%=game_list[game].GetName()%>" data-src="<%='/img/game_icons/' + game_list[game].GetImg()%>">    
+                                </div>
+                                <div class="name">
+                                    <%=game_list[game].GetName()%>
+                                </div>
+                                <div class="rating" data-rating="<%=game_list[game].GetRating()%>" data-gameid="<%=game_list[game].GetID()%>"></div>
+                                <div class="views"><strong><%=game_list[game].GetPlays()%></strong> <span><%=game_caption_views%></span></div>
+                            </li>
+                        <%}%>   
+                    </ul>                                       
+                </section>
+                    
+                <div class="pagination" id="container_games_pagination"><a class="page prev" href="<%=game_prev_page_link%>"> PREV</a> | <a class="page next" href="<%=game_next_page_link%>">NEXT</a></div>
+            </div>
+            <div class="column-right">
 
-        	</div>
+            </div>
         </div>
 
-        <div class="body">
-        	<div class="column-left">
-		        <section class="hidden" id="container_horizontalStats">
-					<div class="horizontal" id="container_mostPlayedGirls">
-						<p><span class="caption_type">type</span> <span class="caption_text">text</span></p>
-						<div class="raphael_canvas" id="raphael_canvas_mostPlayed_girls"></div>
-					</div>
-					<div class="horizontal" id="container_mostPlayedBoys">				
-						<p><span class="caption_type">type</span> <span class="caption_text">text</span></p>
-						<div class="raphael_canvas" id="raphael_canvas_mostPlayed_boys"></div>
-					</div>
-					<div class="horizontal" id="container_mostPlayedAge">
-						<p><span class="caption_text">text</span> <span class="caption_type">type</span></p>
-						<div class="raphael_canvas" id="raphael_canvas_mostPlayed_age"></div>
-					</div>
-					<div class="clear"></div>
-				</section>
+        <div class="body border-bottom" style="margin-bottom : 100px;">
+            <div class="column-left">
+                <section class="hidden" id="container_horizontalStats">
+                    <div class="horizontal-stats" id="container_mostPlayedGirls">                        
+                        <p class="horizontal-stats-icon girls"><span class="caption-type girls">type</span> <span class="caption-text">text</span></p>
+                        <div id="raphael_canvas_mostPlayed_girls"></div>
+                    </div>
+                    <div class="horizontal-stats" id="container_mostPlayedBoys">                
+                        <p class="horizontal-stats-icon boys"><span class="caption-type boys">type</span> <span class="caption-text">text</span></p>
+                        <div id="raphael_canvas_mostPlayed_boys"></div>
+                    </div>
+                    <div class="horizontal-stats" id="container_mostPlayedAge">
+                        <p class="horizontal-stats-icon none"><span class="caption-text">text</span> <span class="caption-type age">type</span></p>
+                        <div id="raphael_canvas_mostPlayed_age"></div>
+                    </div>
+                    <div class="clear"></div>
+                </section>
 
-				<section class="hidden" id="container_worldMapStats">
-					<div id="worldMap"></div>
-				</section>
-        	</div>
-        	<div class="column-right">
+                <section>
+                    <div class="hidden bottom-stats" id="container_gamesPlayedChartStats">
+                        <p class="text-stats"><span class="bold total">Total</span> <span class="orange">232 412</span> players in <span class="orange bold">23</span> games</p>
+                        <p class="top-played-chart-name"><span class="bold">Top Played</span> games</p>
+                        <div id="raphael_canvas_gamesPlayedChartStats"></div>
+                    </div>
 
-        	</div>
+                    <div class="hidden bottom-stats" id="container_worldMapStats">
+                        <div id="raphael_canvas_worldMapStats"></div>
+                    </div>
+                    <div class="clear"></div>
+                </section>
+            </div>
+            <div class="column-right">
+
+            </div>
         </div>
 
         <!--
-		<section class="hidden" id="container_register">
-			<div class="background">
-				<div class="popup">
-					<h1><%=caption%></h1>
-					
-					<form id="register" method="POST">						
-						<p><label for="register_name"><%=name%></label><input type="text" id="register_name" name="register_name" value="" tabindex="1"/></p>
-						<p><label for="register_login"><%=login%></label><input type="text" id="register_login" name="register_login" value="" tabindex="2"/></p>
-						<p><label for="register_password">Password</label><input type="password" id="register_password" name="register_password" value="" tabindex="3"/></p>
-						<p><label for="register_password2">Password(again)</label><input type="password" id="register_password2" name="register_password2" value="" tabindex="4"/></p>
-						<p><label for="register_email">Email</label><input type="text" id="register_email" name="register_email" value="" tabindex="5"/></p>
-						<p><label for="register_subscribe">Subscribe</label><input type="checkbox" id="register_subscribe" name="register_subscribe" checked="checked" tabindex="7"/></p>
-						<p><label for="register_agree">I agree with rules</label><input type="checkbox" id="register_agree" name="register_agree" tabindex="8"/></p>		
-						
-						<p><button id="register_close">CLOSE</button> ||| <button id="register_clear">CLEAR</button> | <button id="register_submit">REGISTER</button></p>
-					</form>					
-				</div>
-			</div>
-		</section>
+        <section class="hidden" id="container_register">
+            <div class="background">
+                <div class="popup">
+                    <h1><%=caption%></h1>
+                    
+                    <form id="register" method="POST">                      
+                        <p><label for="register_name"><%=name%></label><input type="text" id="register_name" name="register_name" value="" tabindex="1"/></p>
+                        <p><label for="register_login"><%=login%></label><input type="text" id="register_login" name="register_login" value="" tabindex="2"/></p>
+                        <p><label for="register_password">Password</label><input type="password" id="register_password" name="register_password" value="" tabindex="3"/></p>
+                        <p><label for="register_password2">Password(again)</label><input type="password" id="register_password2" name="register_password2" value="" tabindex="4"/></p>
+                        <p><label for="register_email">Email</label><input type="text" id="register_email" name="register_email" value="" tabindex="5"/></p>
+                        <p><label for="register_subscribe">Subscribe</label><input type="checkbox" id="register_subscribe" name="register_subscribe" checked="checked" tabindex="7"/></p>
+                        <p><label for="register_agree">I agree with rules</label><input type="checkbox" id="register_agree" name="register_agree" tabindex="8"/></p>        
+                        
+                        <p><button id="register_close">CLOSE</button> ||| <button id="register_clear">CLEAR</button> | <button id="register_submit">REGISTER</button></p>
+                    </form>                 
+                </div>
+            </div>
+        </section>
         -->
 
-		<div id="qunit"> </div>
+        <div id="qunit"> </div>
     </body>
 </html>

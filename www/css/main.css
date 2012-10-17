@@ -3,22 +3,44 @@
 	src: url('fonts/Sertig.ttf')  format('truetype');
 }
 
+@font-face {
+	font-family: 'Bebas';
+	src: url('/css/fonts/Bebas.ttf')  format('truetype');
+}
+
+.hidden {
+	display: none;
+}
+
+.orange {
+	color: #EA7C39;
+	font-size: 15px;
+	font-family: 'Bebas';
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.border-bottom {	
+	border-bottom: 1px solid #ccc;
+}
+
 header {
 	width: 950px;
 	margin: 0 auto;
-	border-bottom: 1px solid #ccc;
-	padding: 15px 25px;
+	padding: 18px 30px 24px 35px;
 
 }
 
 header nav {
 	display: inline-block;
-	margin: 0 0 0 150px;
-}
+	margin: 0 0 0 195px;
+} 
 
 header nav li {
 	float: left;
-	margin-right: 10px;
+	margin-right: 16px;
 
 }
 
@@ -31,6 +53,7 @@ header nav li a {
 	font-family: 'Sertig';
 	border: 1px solid transparent;
 	text-shadow: #ddd 1px 1px 1px;
+	text-decoration: none;
 }
 
 header nav li a.active {
@@ -44,7 +67,7 @@ header nav li a:hover {
 
 .body {
 	width: 950px;
-	padding: 15px 25px;
+	padding: 24px 25px 37px;
 	overflow: hidden;
 	margin: 0 auto;
 }
@@ -61,6 +84,7 @@ header nav li a:hover {
 
 .games-navigation {
 	overflow: hidden;
+	padding-left: 10px;
 }
 
 .sorting a {
@@ -71,7 +95,8 @@ header nav li a:hover {
 	font-weight: bold;
 	text-decoration: none;
 	border-bottom: 1px dashed #818181;
-	margin-right: 25px;
+	margin-right: 22px;
+	line-height: 9px;
 }
 
 .sorting a:hover {
@@ -87,19 +112,19 @@ input.search {
 	float: right;
 	color: #aba8a8;
 	font-family: Arial;
-	font-size: 11px;
+	font-size: 12px;
 	border: 1px solid #dadada;
-	background: #f0f0f0 url('/img/zoom.png') no-repeat 160px center;
-	width: 150px;
-	padding: 3px 20px 3px 5px;
-	margin-right: 40px;
+	background: #f0f0f0 url('/img/zoom.png') no-repeat 185px center;
+	width: 175px;
+	padding: 3px 20px 1px 5px;
+	margin-right: 59px;
 }
 
 .games-list {
 	overflow: hidden;
 	list-style-type: none;
 	padding: 0;
-	margin: 10px 0 0 0;
+	margin: 23px 0 0 0;
 }
 
 .games-list li {
@@ -107,15 +132,14 @@ input.search {
 	float: left;
 	padding: 0;
 	margin: 0;
-	margin-right: 40px;
-	margin-bottom: 40px;
+	margin: 0 40px 18px 0;
 	overflow: hidden;
 }
 
 .games-list .img {
 	width: 150px;
 	height: 86px;
-	padding: 10px;
+	padding: 10px 10px 7px 10px;
 	border: 1px solid #ddd;
 	background-color: #f8f8f8;
 }
@@ -135,7 +159,7 @@ input.search {
 	font-family: arial;
 	text-align: center;
 	text-decoration: underline;
-	margin: 5px 10px;
+	margin: 5px 10px 4px;
 	text-overflow: ellipsis;
 	-o-text-overflow: ellipsis
 }
@@ -153,13 +177,73 @@ input.search {
 	font-size: 10px;
 	color: #5a5a5a;
 	font-family: arial;
-	margin-right: 15px;
+	margin: -1px 15px 0;
+}
+
+.pagination {
+	margin-top: 8px;
+	padding: 5px 0;	
 }
 
 
+.horizontal-stats {
+	font-size: 12px;	
+	float: left;
+	width: 212px;
+	margin-bottom: 8px;
+	padding-top: 10px;
+}
 
+.horizontal-stats-icon {
+	margin: 0 0 6px;
+	padding: 6px 0 7px 25px; 
+}
 
+.horizontal-stats-icon.girls {
+	background: url(/img/icon_girls.png) no-repeat;
+}
 
+.horizontal-stats-icon.boys {
+	background: url(/img/icon_boys.png) no-repeat;
+}
+.horizontal-stats-icon.none {
+	padding-left: 0;
+}
 
+.caption-type.boys {
+	margin-left: 5px;
+}
 
+.bottom-stats {
+	float: left;
+}
 
+.text-stats {
+	font-size: 11px;
+	margin: 10px 0 0;
+}
+
+.text-stats .total {
+	font-size: 13px;
+}
+
+.top-played-chart-name {
+	margin-top: 4qpx;
+	font-size: 12px;
+}
+
+#container_gamesPlayedChartStats,
+#container_worldMapStats {
+	height: 220px;
+}
+
+#raphael_canvas_gamesPlayedChartStats {
+	width: 220px;
+	height: 175px;
+}
+
+#raphael_canvas_worldMapStats {
+	width: 428px;
+	height: 275px;
+	margin-top: 50px;
+}

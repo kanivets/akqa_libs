@@ -182,12 +182,12 @@ App.proto.models.gameIcon = Backbone.Model.extend({
 	GetName : function() { return this.get('gameData').name; },
 	GetRating : function() { return this.get('gameData').rating; },
 	GetFeaturedIndex : function() { return this.get('gameData').featured_index; },
-	GetViews : function() { return this.get('gameData').views; },
+	GetPlays : function() { return this.get('gameData').plays; },
 	GetImg : function() { return this.get('gameData').id + '.' + this.get('gameData').pic_ext; },
 	
 	initialize : function(options) {		
 		App.utils.flow_ext(this.name + '.initialize');
-		_.bindAll(this, 'GetRating', 'GetID', 'GetViews', 'GetName', 'GetImg', 'GetFeaturedIndex');	
+		_.bindAll(this, 'GetRating', 'GetID', 'GetPlays', 'GetName', 'GetImg', 'GetFeaturedIndex');	
 	}
 });
 
@@ -252,7 +252,7 @@ App.proto.models.games = Backbone.Collection.extend({
 		}
 
 		if (sCacheIndex && this._aCachedData[sCacheIndex]) {
-			App.utils.debug('Got game list from cache \'' + sCacheIndex + "'");
+			App.utils.info('Got game list from cache \'' + sCacheIndex + "'");
 			this._nTotalPages = this._aCachedData[sCacheIndex].totalPages;
 			return this._aCachedData[sCacheIndex].data;
 		}
@@ -272,8 +272,8 @@ App.proto.models.games = Backbone.Collection.extend({
 				case 'featured' : return -el.GetFeaturedIndex();
 				case 'newest' : return -el.GetID();
 				case 'rating' : return -el.GetRating();
-				case 'views' : return -el.GetViews();
-				case 'votes' : return -el.GetViews() / (el.GetRating() ? el.GetRating() : 1);
+				case 'views' : return -el.GetPlays();
+				case 'votes' : return -el.GetPlays() / (el.GetRating() ? el.GetRating() : 1);
 				default : return 0;
 			}
 		});
@@ -360,6 +360,11 @@ App.proto.models.stats.mostPlayed = Backbone.Model.extend({
 		return this._aData;
 	},
 
+	GetID : function() {
+		App.utils.flow_ext(this.name + '.GetID');
+		return this._aData.id;
+	},
+
 	GetMaxPercents : function() {
 		App.utils.flow_ext(this.name + '.GetEntitiesAndPercents');
 		return _.max(this._aData, function(el) {return el.percents;}).percents;
@@ -372,7 +377,7 @@ App.proto.models.stats.mostPlayed = Backbone.Model.extend({
 	
 	initialize : function() {		
 		App.utils.flow_ext(this.name + '.initialize');
-		_.bindAll(this, 'GetCaption', 'GetData', 'GetMaxPercents', 'GetMinPercents');
+		_.bindAll(this, 'GetCaption', 'GetData', 'GetMaxPercents', 'GetMinPercents', 'GetID');
 
 		this._aData = App.data.horizontalStats[this.get('type')];			
 	}	
