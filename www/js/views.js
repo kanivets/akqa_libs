@@ -287,24 +287,36 @@ App.proto.views.games.pagination = App.proto.views._subview.extend({
 		aParams.page = (nPage ? parseInt(nPage) : 1) + 1;//prev
 		var sLinkNext = App.router.BuildLink(null, null, aParams);
 		
+		aParams.page = null;//prev
+		var sLinkBasis = App.router.BuildLink(null, null, aParams) + '/page/';		
+
 		aParams.page = nPage;//prev
+		
+		if (nPage == null) {
+			nPage = 1;
+		}
+
+
+		var sPagesLinks = '';
+		var nTotalPages = this._model.GetTotalPages();
+		if (nTotalPages > 1) {
+			for (var i = 1; i <= nTotalPages; i++)
+				sPagesLinks += '<a href="' + sLinkBasis + i + '"' + (nPage == i ? ' class="active"' : '') + '>' + i +'</a>';
+		}
+
 
 		this.$el.html(this._templateCompiled({
-			game_prev_page_link : sLinkPrev,
-			game_next_page_link : sLinkNext
+			game_pagination_prev_page_link : sLinkPrev,
+			game_pagination_next_page_link : sLinkNext,
+			game_pagination_prev_page_caption : App.langs.Get('game_pagination_prev_page_caption'),
+			game_pagination_next_page_caption : App.langs.Get('game_pagination_next_page_caption'),
+
+			game_pagination_page_link_basis : sLinkBasis,
+			game_pagination_pages_links : sPagesLinks
 		}));
 
-		if (this._model.IsPrevPageExists()) {
-			this.$el.find('.page.prev').show();
-		} else {
-			this.$el.find('.page.prev').hide();
-		}
-
-		if (this._model.IsNextPageExists()) {
-			this.$el.find('.page.next').show();
-		} else {
-			this.$el.find('.page.next').hide();
-		}
+		this.$el.find('.pages-control.prev a').toggle(this._model.IsPrevPageExists());
+		this.$el.find('.pages-control.next a').toggle(this._model.IsNextPageExists());		
 	},
 
 	ChangePage : function(e) {
@@ -550,7 +562,7 @@ App.proto.views.stats.gamesPlayedChartStats = App.proto.views._dynamic.extend({
 		}
 
 		for (i in aData) {
-			this.chart.DrawText(10, 160, aData[i].name, {				
+			this.chart.DrawText(7, 157, aData[i].name, {				
 				'href' : App.router.BuildLink(null, 'playgame', {id : aData[i].id}),
 				'fill' : '#ea7c39',
 				'text-anchor': 'start', 
@@ -559,7 +571,7 @@ App.proto.views.stats.gamesPlayedChartStats = App.proto.views._dynamic.extend({
 				'opacity' : 0
 			}, 'topPlayedGamesChart_name_' + aData[i].id);
 
-			this.chart.DrawText(10, 170, aData[i].plays, {				
+			this.chart.DrawText(7, 171, aData[i].plays, {				
 				'fill' : '#666',		
 				'text-anchor': 'start', 
 				'font-size' : 10,

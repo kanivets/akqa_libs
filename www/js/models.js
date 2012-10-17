@@ -222,6 +222,7 @@ App.proto.models.games = Backbone.Collection.extend({
 		}
 
 		var nCurPage = parseInt(aParams.page) || 1;
+		console.log(nCurPage);
 		return nCurPage > 1; 
 	},
 

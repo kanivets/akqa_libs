@@ -74,12 +74,14 @@ header nav li a:hover {
 
 .body .column-left {
 	float: left;
-	width: 670px;
+	width: 660px;
 }
 
 .body .column-right {
 	float: right;
-	width: 280px;
+	width: 290px;
+	position: relative;
+	right: -20px;
 }
 
 .games-navigation {
@@ -124,7 +126,7 @@ input.search {
 	overflow: hidden;
 	list-style-type: none;
 	padding: 0;
-	margin: 23px 0 0 0;
+	margin: 24px 0 0 0;
 }
 
 .games-list li {
@@ -181,10 +183,60 @@ input.search {
 }
 
 .pagination {
-	margin-top: 8px;
-	padding: 5px 0;	
+	margin-top: 7px;
+	padding: 0;	
+	width: 610px;
 }
 
+.pages-control {
+	float: left;
+	width: 20%;
+	height: 30px;
+	display: inline-block;
+}
+
+.pages-control.list {
+	width: 60%;
+	text-align: center;
+	font-size: 11px;
+	padding-top: 10px;
+}
+
+.pages-control.list a {
+	text-decoration: none;
+	margin: 0px 10px;
+	padding: 7px;
+}
+
+.pages-control.list a:hover {
+	background-color: #f1b18a;
+}
+
+.pages-control.list a.active {
+    border: 1px solid #f1b18a;
+}
+
+.pages-control.next {
+	text-align: right;
+}
+
+.page-button {
+	background-color: #F8F8F8;
+    border: 1px solid #DDDDDD;
+    width: 46px;
+    height: 20px;
+    margin-top: 2px;
+    padding-top: 6px;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    text-decoration: none;
+    color: #000;
+}
+
+.page-button:hover {
+	background-color: #f1b18a;
+}
 
 .horizontal-stats {
 	font-size: 12px;	
@@ -220,7 +272,7 @@ input.search {
 
 .text-stats {
 	font-size: 11px;
-	margin: 10px 0 0;
+	margin: 8px 0 0;
 }
 
 .text-stats .total {
@@ -228,13 +280,14 @@ input.search {
 }
 
 .top-played-chart-name {
-	margin-top: 4qpx;
+	margin: 41px 0 0 1px;
 	font-size: 12px;
 }
 
 #container_gamesPlayedChartStats,
 #container_worldMapStats {
 	height: 220px;
+	margin-bottom: 26px;
 }
 
 #raphael_canvas_gamesPlayedChartStats {
@@ -246,4 +299,14 @@ input.search {
 	width: 428px;
 	height: 275px;
 	margin-top: 50px;
+}
+
+.banner {
+	float: left;
+	margin-bottom: 5px;
+}
+
+.banner.left {
+	float: left;
+	margin-right: 7px;
 }

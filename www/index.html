@@ -112,7 +112,19 @@
                     </ul>                                       
                 </section>
                     
-                <div class="pagination" id="container_games_pagination"><a class="page prev" href="<%=game_prev_page_link%>"> PREV</a> | <a class="page next" href="<%=game_next_page_link%>">NEXT</a></div>
+                <div class="pagination" id="container_games_pagination">
+                    <div class="pages-control prev">
+                        <a href="<%=game_pagination_prev_page_link%>" class="page-button"><%=game_pagination_prev_page_caption%></a>
+                    </div>
+                    <div class="pages-control list">
+                        <%=game_pagination_pages_links%>
+                    </div>
+                    <div class="pages-control next">
+                        <a href="<%=game_pagination_next_page_link%>" class="page-button"><%=game_pagination_next_page_caption%></a>
+                    </div>
+                    
+                    <div class="clear"></div>
+                </div>
             </div>
             <div class="column-right">
 
@@ -151,19 +163,27 @@
                 </section>
             </div>
             <div class="column-right">
-
+                <div class="banner large"><a href="http://akqa.com" target="_blank"><img src="/img/banners/1.jpg" title="banner 1"></a></div>
+                <div class="banner small left"><a href="http://akqa.com" target="_blank"><img src="/img/banners/2.jpg" title="banner 2"></a></div>
+                <div class="banner small"><a href="http://akqa.com" target="_blank"><img src="/img/banners/3.jpg" title="banner 3"></a></div>
+                <div class="banner small left"><a href="http://akqa.com" target="_blank"><img src="/img/banners/4.jpg" title="banner 4"></a></div>
+                <div class="banner small"><a href="http://akqa.com" target="_blank"><img src="/img/banners/5.jpg" title="banner 5"></a></div>
+                <div class="banner small left"><a href="http://akqa.com" target="_blank"><img src="/img/banners/6.jpg" title="banner 6"></a></div>
+                <div class="banner small"><a href="http://akqa.com" target="_blank"><img src="/img/banners/7.jpg" title="banner 7"></a></div>
+                <div class="clear"></div>
             </div>
+            <div class="clear"></div>
         </div>
 
         <!--
         <section class="hidden" id="container_register">
             <div class="background">
                 <div class="popup">
-                    <h1><%=caption%></h1>
+                    <h1>caption</h1>
                     
                     <form id="register" method="POST">                      
-                        <p><label for="register_name"><%=name%></label><input type="text" id="register_name" name="register_name" value="" tabindex="1"/></p>
-                        <p><label for="register_login"><%=login%></label><input type="text" id="register_login" name="register_login" value="" tabindex="2"/></p>
+                        <p><label for="register_name">name</label><input type="text" id="register_name" name="register_name" value="" tabindex="1"/></p>
+                        <p><label for="register_login">login</label><input type="text" id="register_login" name="register_login" value="" tabindex="2"/></p>
                         <p><label for="register_password">Password</label><input type="password" id="register_password" name="register_password" value="" tabindex="3"/></p>
                         <p><label for="register_password2">Password(again)</label><input type="password" id="register_password2" name="register_password2" value="" tabindex="4"/></p>
                         <p><label for="register_email">Email</label><input type="text" id="register_email" name="register_email" value="" tabindex="5"/></p>
