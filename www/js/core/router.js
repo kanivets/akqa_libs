@@ -16,8 +16,9 @@ App.proto.routers._common = Backbone.Router.extend({
 	
 	initialize : function() {
 		App.utils.flow_core('MainRouter.initialize');		
-		_.bindAll(this, 'GetCurrentPart', 'BuildLink', 'NavigateTo', 'ClearParams', 'SetParams', 'GetParams');
+		_.bindAll(this, 'GetCurrentPart', 'BuildLink', 'NavigateTo', 'ClearParams', 'SetParams', 'GetParam');
 
+		
 		this.ClearParams();
 	},
 	
@@ -36,7 +37,7 @@ App.proto.routers._common = Backbone.Router.extend({
 			part = '';
 		}
 
-		var sLink = '/' + lang + '/' + part;
+		var sLink = lang + '/' + part;
 		for (var i in customParams) {
 			if (customParams[i] != null) {
 				sLink += '/' + i + '/' + customParams[i];
@@ -77,9 +78,5 @@ App.proto.routers._common = Backbone.Router.extend({
 		
 		this.navigate(link, {trigger: !silent});
 		return true;
-	},
-	
-	Init : function () {
-		App.utils.flow_core('MainRouter.Init');
 	}
 });

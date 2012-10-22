@@ -438,7 +438,7 @@ App.proto.views.stats.mostPlayed = App.proto.views._static.extend({
 	},
 
 	render : function() {	
-		App.utils.log(this.name + '(' + this.model.get('type') + ').render');	
+		App.utils.flow_ext(this.name + '(' + this.model.get('type') + ').render');	
 
 		if (!this.graphics) {
 			this.DrawGraphics(this._bIsNeedLinking);
@@ -492,7 +492,7 @@ App.proto.views.stats.worldMapStats = App.proto.views._dynamic.extend({
 
 	render : function() {
 		if (!this._bIsVisible) return;
-		App.utils.log(this.name + '.render');
+		App.utils.flow_ext(this.name + '.render');
 
 		if (!this.map) {			
 			var canvas = $('#raphael_canvas_worldMapStats');
@@ -508,23 +508,46 @@ App.proto.views.stats.worldMapStats = App.proto.views._dynamic.extend({
 App.proto.views.stats.gamesPlayedChartStats = App.proto.views._dynamic.extend({
 	name : 'GamesPlayedChartView', 
 	
+	events : {
+		'click a' : 'OnClicked'
+	},
+
 	chart : null, 
 
 	initialize : function(args) {
 		App.proto.views._dynamic.prototype.initialize.call(this, args);	
 		App.utils.flow_ext(this.name + '.initialize');	
 
-		_.bindAll(this, 'render', 'Draw');	
+		_.bindAll(this, 'render', 'OnLanguageChanged', 'RedrawTemplate', 'DrawGraphics');	
 	},
 
 	render : function() {
-		App.utils.flow_ext(this.name + '.render');	
+		if (!this._bIsVisible) return;
+		App.utils.flow_ext(this.name + '.render');
+
 		if (!this.chart) {
-			this.Draw();
+			this.RedrawTemplate();
 		}
 	},
 
-	Draw : function() {
+	OnLanguageChanged : function() {
+		App.utils.flow_ext(this.name + '.OnLanguageChanged');
+		this.RedrawTemplate();
+	},
+
+	RedrawTemplate : function() {
+		App.utils.flow_ext(this.name + '.RedrawTemplate');
+		this.$el.html(this._templateCompiled({
+				charts_top_played_caption_total : App.langs.Get('stats_charts_topplayed_caption_total'),
+				charts_top_played_caption_players_in : App.langs.Get('stats_charts_topplayed_caption_players_in'),
+				charts_top_played_caption_games : App.langs.Get('stats_charts_topplayed_caption_total_games'),
+				charts_top_played_caption_topplayed : App.langs.Get('stats_charts_topplayed_caption_topplayed'),
+				charts_top_played_caption_topplayed_games : App.langs.Get('stats_charts_topplayed_caption_games')
+			}));
+		this.DrawGraphics();
+	},
+
+	DrawGraphics : function() {
 		App.utils.flow_ext(this.name + '.Draw');	
 		var aColors = ['#ff6d6d', '#ff77c8', '#e170ff', '#896cff', '#6ba6ff', '#6efeff', '#6effa8', '#89ff6c', '#e2ff6e', '#ffc66f'];
 
@@ -540,7 +563,13 @@ App.proto.views.stats.gamesPlayedChartStats = App.proto.views._dynamic.extend({
 				id: aTopPlayedGames[i].id,
 				name : aTopPlayedGames[i].name,
 				plays : aTopPlayedGames[i].plays + ' ' + App.langs.Get('stats_charts_topPlayed_players'),
-				color : aColors[i]
+				attr : {
+					fill: aColors[i],
+					stroke : '#fff', 
+					'stroke-width': 2,
+					'href' : App.router.BuildLink(null, 'playgame', {id : aTopPlayedGames[i].id})		
+				}
+				
 			});
 		}
 
@@ -554,7 +583,7 @@ App.proto.views.stats.gamesPlayedChartStats = App.proto.views._dynamic.extend({
 		this.chart = new App.graphics.wrappers.raphael();
 		
 		this.chart.PreparePaper('raphael_canvas_gamesPlayedChartStats', canvas.width(), canvas.height());
-		this.chart.DrawChart(cx, cy, radius, aData, nTotalPlays, {}, 'topPlayedGamesChart');
+		this.chart.DrawChart(cx, cy, radius, aData, nTotalPlays, 'topPlayedGamesChart');
 
 		var aSectors = this.chart.GetElement('topPlayedGamesChart');
 		if (!aSectors) {
@@ -592,5 +621,12 @@ App.proto.views.stats.gamesPlayedChartStats = App.proto.views._dynamic.extend({
 				that.chart.GetElement('topPlayedGamesChart_plays_' + this.custom_id).stop().animate({opacity: 0}, animateTimeMS / 2);
 			});
 		}	
+	},
+
+	OnClicked : function(e) {	
+		App.utils.flow_ext(this.name + '.Draw');	
+		e.preventDefault();
+
+		App.router.NavigateTo(e.currentTarget.getAttribute('href'));
 	} 
 });

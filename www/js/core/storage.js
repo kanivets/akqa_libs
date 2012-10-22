@@ -26,7 +26,7 @@ App.proto.storage = App.proto.storage || {};
 				options.expires = -1;
 			}
 
-			if ( typeof options.expires === 'number') {
+			if ( typeof options.expires === 'number' && options.expires) {
 				var days = options.expires, t = options.expires = new Date();
 				t.setDate(t.getDate() + days);
 			}
@@ -54,6 +54,7 @@ App.proto.storage = App.proto.storage || {};
 
 	$.removeCookie = function(key, options) {
 		if ($.cookie(key) !== null) {
+			options.expire = -1;
 			$.cookie(key, null, options);
 			return true;
 		}
@@ -65,12 +66,21 @@ App.proto.storage = App.proto.storage || {};
 
 App.proto.storage.localStorage = {
 	Get : function (key) {
+		if (typeof key !== 'string') {
+			return false;
+		}
+
 		App.utils.flow_core('App.proto.storage.localStorage.Get(' + key + ')');
 		var data = localStorage.getItem(key);
+
 		return data ? JSON.parse(data) : null;	
 	},
 	
-	Set : function (key, value) {		
+	Set : function (key, value) {
+		if (typeof key !== 'string' || value == undefined) {
+			return false;
+		}
+
 		App.utils.flow_core('App.proto.storage.localStorage.Set(' + key + ', ' + value + ')');
 		try	{
 			localStorage.setItem(key, JSON.stringify(value));
@@ -86,6 +96,10 @@ App.proto.storage.localStorage = {
 	},
 	
 	Delete : function (key) {
+		if (typeof key !== 'string') {
+			return false;
+		}
+
 		App.utils.flow_core('App.proto.storage.localStorage.Delete(' + key + ')');
 		try {
 			localStorage.removeItem(key);
@@ -101,19 +115,33 @@ App.proto.storage.localStorage = {
 
 App.proto.storage.cookiesStorage = {	
 	Get : function (key) {
+		if (typeof key !== 'string') {
+			return false;
+		}
 		App.utils.flow_core('App.proto.storage.cookiesStorage.Get(' + key + ')');
 		return $.cookie(key);	
 	},
 	
-	Set : function (key, value) {
+	Set : function (key, value, expireDays) {
+		if ((typeof key !== 'string') || value == undefined) {
+			return false;
+		}
+
+		if ((expireDays == undefined)) {
+			expireDays = 365*10;
+		} else {
+			expireDays = parseInt(expireDays);	
+		}
+
 		App.utils.flow_core('App.proto.storage.cookiesStorage.Set(' + key + ', ' + value + ')');
-		$.cookie(key, value, {expires: 365*10, path: '/'});	
+		return $.cookie(key, value, {expires: expireDays, path: '/'});	
 	},
 	
 	Delete : function (key) {
+		if (typeof key !== 'string') {
+			return false;
+		}
 		App.utils.flow_core('App.proto.storage.cookiesStorage.Delete(' + key + ')');
-		return $.removeCookie(key);	
+		return $.removeCookie(key, {expires: -1});	
 	}	
 };
-
-App.storage = Modernizr.localstorage && App.proto.storage.localStorage.Set('test', 'test') && App.proto.storage.localStorage.Delete('test') ? App.proto.storage.localStorage : App.proto.storage.cookiesStorage;

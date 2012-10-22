@@ -1,7 +1,6 @@
 var App = App || {};
 
-App.proto.router = App.proto.routers._common.extend({	
-
+App.proto.router = App.proto.routers._common.extend({
 	routes : {
 		'' 						: 	'Process',
 		':lang' 				: 	'Process',
@@ -29,6 +28,8 @@ App.proto.router = App.proto.routers._common.extend({
 			this.current_part = sNewPart;
 			this.trigger('part_changed', sNewPart);
 			
+			$('html, body').animate({scrollTop : 0}, 'slow');
+
 			App.utils.info('Changed part to: ' + this.current_part);
 		}
 
@@ -58,8 +59,10 @@ App.proto.router = App.proto.routers._common.extend({
 
 	},
 
-	initialize : function () {
+	initialize : function (args) {
+      	App.proto.routers._common.prototype.initialize.call(this, args);
 		App.utils.flow_core('MainRouter.Init');
+
 		_.bindAll(this, 'Process');
 	}
 

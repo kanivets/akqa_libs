@@ -32,6 +32,7 @@
         <script src="/js/libs/md5.js"></script>
         
         <script src="/js/core/utils.js"></script>
+        <script src="/js/core/langs.js"></script>
         <script src="/js/core/storage.js"></script>
         <script src="/js/core/router.js"></script>
         <script src="/js/core/views.js"></script>
@@ -50,13 +51,10 @@
         <script src="/js/data/countries.js"></script>
         <script src="/js/data/world_1000.js"></script>
         <script src="/js/data/horizontalStats.js"></script>
-        
         <!--
-        
         <script src="/js/libs/QUnit.js"></script>
-        <script src="/js/_unittests/unittests_common.js"></script>
-        <script src="/js/_unittests/unittests_bebrainy.js"></script>   
-        
+        <script src="/js/_unittests/unittests_core.js"></script>        
+        <script src="/js/_unittests/unittests_bebrainy.js"></script>           
         -->
         
         <!--<script src="/js/libs/jasmine.js"></script>-->   
@@ -70,7 +68,7 @@
 
 
         <header class="border-bottom">
-          <a href="<%=home_link%>" class='link'><img src="/img /logo.png" alt="Be Brainy" /></a>
+          <a href="<%=home_link%>" class='link'><img src="/img/logo.png" alt="Be Brainy" /></a>
           <nav>
             <ul>
               <li><a href="<%=games_link%>" class="link<%=cur_part == 'games' ? ' active' : ''%>"><%=games_caption%></a></li>
@@ -78,10 +76,9 @@
               <li><a href="<%=statistics_link%>" class="link<%=cur_part == 'statistics' ? ' active' : ''%>"><%=statistics_caption%></a></li>
             </ul>
           </nav>
-          <!-- <a class="drop-down link" href="<%=home_link%>">gattoo</a> -->
         </header>
 
-        <div class="body border-bottom">
+        <div class="body border-bottom ">
             <div class="column-left hidden" id="container_games">
                 <input type="text" class="search" value="" placeholder="search" id="container_games_searching"/> 
                 <div class="games-navigation" id="container_games_sorting">
@@ -127,11 +124,28 @@
                 </div>
             </div>
             <div class="column-right">
-
+                <div class="fight-header">
+                    <span class="logo orange">
+                        <a class="social-logo letter-f"href="http://facebook.com" target="_blank"><img src="/img/f.jpg" title="Facebook" alt="f"></a>i
+                        <a class="social-logo letter-g"href="http://plus.google.com" target="_blank"><img src="/img/g.jpg" title="Google Plus" alt="g"></a>h
+                        <a class="social-logo letter-t"href="http://twitter.com" target="_blank"><img src="/img/t.jpg" title="Twitter" alt="t"></a>
+                    </span>                    
+                    <span class="caption">WITH YOUR FRIENDS</span>
+                </div>
+                
+                <div class="fight-social">
+                    <div class="upper">
+                        <img src="/img/__fb_up.jpg"> 
+                    </div>
+                    
+                    <div class="lower">
+                        <img src="/img/__fb_down.jpg">                        
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="body border-bottom" style="margin-bottom : 100px;">
+        <div class="body border-bottom">
             <div class="column-left">
                 <section class="hidden" id="container_horizontalStats">
                     <div class="horizontal-stats" id="container_mostPlayedGirls">                        
@@ -151,8 +165,8 @@
 
                 <section>
                     <div class="hidden bottom-stats" id="container_gamesPlayedChartStats">
-                        <p class="text-stats"><span class="bold total">Total</span> <span class="orange">232 412</span> players in <span class="orange bold">23</span> games</p>
-                        <p class="top-played-chart-name"><span class="bold">Top Played</span> games</p>
+                        <p class="text-stats"><span class="bold total"><%=charts_top_played_caption_total%></span> <span class="orange">232 412</span> <%=charts_top_played_caption_players_in%> <span class="orange bold">23</span> <%=charts_top_played_caption_games%></p>
+                        <p class="top-played-chart-name"><span class="bold"><%=charts_top_played_caption_topplayed%></span> <%=charts_top_played_caption_topplayed_games%></p>
                         <div id="raphael_canvas_gamesPlayedChartStats"></div>
                     </div>
 
@@ -163,40 +177,27 @@
                 </section>
             </div>
             <div class="column-right">
-                <div class="banner large"><a href="http://akqa.com" target="_blank"><img src="/img/banners/1.jpg" title="banner 1"></a></div>
-                <div class="banner small left"><a href="http://akqa.com" target="_blank"><img src="/img/banners/2.jpg" title="banner 2"></a></div>
-                <div class="banner small"><a href="http://akqa.com" target="_blank"><img src="/img/banners/3.jpg" title="banner 3"></a></div>
-                <div class="banner small left"><a href="http://akqa.com" target="_blank"><img src="/img/banners/4.jpg" title="banner 4"></a></div>
-                <div class="banner small"><a href="http://akqa.com" target="_blank"><img src="/img/banners/5.jpg" title="banner 5"></a></div>
-                <div class="banner small left"><a href="http://akqa.com" target="_blank"><img src="/img/banners/6.jpg" title="banner 6"></a></div>
-                <div class="banner small"><a href="http://akqa.com" target="_blank"><img src="/img/banners/7.jpg" title="banner 7"></a></div>
-                <div class="clear"></div>
-            </div>
-            <div class="clear"></div>
-        </div>
-
-        <!--
-        <section class="hidden" id="container_register">
-            <div class="background">
-                <div class="popup">
-                    <h1>caption</h1>
-                    
-                    <form id="register" method="POST">                      
-                        <p><label for="register_name">name</label><input type="text" id="register_name" name="register_name" value="" tabindex="1"/></p>
-                        <p><label for="register_login">login</label><input type="text" id="register_login" name="register_login" value="" tabindex="2"/></p>
-                        <p><label for="register_password">Password</label><input type="password" id="register_password" name="register_password" value="" tabindex="3"/></p>
-                        <p><label for="register_password2">Password(again)</label><input type="password" id="register_password2" name="register_password2" value="" tabindex="4"/></p>
-                        <p><label for="register_email">Email</label><input type="text" id="register_email" name="register_email" value="" tabindex="5"/></p>
-                        <p><label for="register_subscribe">Subscribe</label><input type="checkbox" id="register_subscribe" name="register_subscribe" checked="checked" tabindex="7"/></p>
-                        <p><label for="register_agree">I agree with rules</label><input type="checkbox" id="register_agree" name="register_agree" tabindex="8"/></p>        
-                        
-                        <p><button id="register_close">CLOSE</button> ||| <button id="register_clear">CLEAR</button> | <button id="register_submit">REGISTER</button></p>
-                    </form>                 
+                <div class="banners">
+                    <div class="large"><a href="http://akqa.com" target="_blank"><img src="/img/banners/1.jpg" title="banner 1" alt="banner 1"></a></div>
+                    <div class="small left"><a href="http://akqa.com" target="_blank"><img src="/img/banners/2.jpg" title="banner 2" alt="banner 2"></a></div>
+                    <div class="small"><a href="http://akqa.com" target="_blank"><img src="/img/banners/3.jpg" title="banner 3" alt="banner 3"></a></div>
+                    <div class="small left"><a href="http://akqa.com" target="_blank"><img src="/img/banners/4.jpg" title="banner 4" alt="banner 4"></a></div>
+                    <div class="small"><a href="http://akqa.com" target="_blank"><img src="/img/banners/5.jpg" title="banner 5" alt="banner 5"></a></div>
+                    <div class="small left"><a href="http://akqa.com" target="_blank"><img src="/img/banners/6.jpg" title="banner 6" alt="banner 6"></a></div>
+                    <div class="small"><a href="http://akqa.com" target="_blank"><img src="/img/banners/7.jpg" title="banner 7" alt="banner 7"></a></div>
                 </div>
             </div>
-        </section>
-        -->
+        </div>
 
+        <footer>
+            <div class="company-name">
+                AKQA 2012
+            </div>
+
+            <div class="creator">
+                antonio.gattoo©gmail.com <span class="since">since 1983</span>
+            </div>
+        </footer>
         <div id="qunit"> </div>
     </body>
 </html>

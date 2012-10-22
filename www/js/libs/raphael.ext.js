@@ -1,6 +1,5 @@
-Raphael.fn.pieChart = function (cx, cy, r, aData, totalVal, attr) {
+Raphael.fn.pieChart = function (cx, cy, r, aData, totalVal) {
 	aData = aData || [];
-	attr = attr || {};
 
 	var paper = this,
 		rad = Math.PI / 180,
@@ -23,12 +22,9 @@ Raphael.fn.pieChart = function (cx, cy, r, aData, totalVal, attr) {
 			var nPerc = data.val / total;
 			var angleplus = 360 * nPerc;
 			var popangle = angle + (angleplus / 2);
-				
-			var p = sector(cx, cy, r, angle, angle + angleplus, {
-				fill: data.color, 
-				stroke : '#fff', 
-				'stroke-width': 2
-			});
+			
+			var p = sector(cx, cy, r, angle, angle + angleplus, data.attr || {});
+
 			angle += angleplus;
 			if (data.id) {
 				p.custom_id = data.id;
@@ -39,7 +35,12 @@ Raphael.fn.pieChart = function (cx, cy, r, aData, totalVal, attr) {
 	total = totalVal || 1;
 
 	for (i in aData) {
-		chart.push(process(aData[i] || {val : 0, color: '#fff'}));
+		if (!aData) {
+			App.utils.error('Raphael.fn.pieChart : aData[' + i + '] is not defined!');
+			continue;
+		}
+
+		chart.push(process(aData[i]));
 	}
 
 	return chart;

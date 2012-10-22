@@ -5,18 +5,20 @@ $(document).ready(function(){
 		evaluate : /\{\{(.+?)\}\}/g 
 	};
 	*/	
+
 	App.router = {};
 	App.views = {};
 	App.models = {};
-			
-	App.langs = Languator;
-	
+				
 	App.utils.flow_ext('MainController: begin');
 
 	_.extend(App, Backbone.Events);
 	_.extend(App.langs, Backbone.Events);	
-		
+	
+	App.storage = Modernizr.localstorage && App.proto.storage.localStorage.Set('test', 'test') && App.proto.storage.localStorage.Delete('test') ? App.proto.storage.localStorage : App.proto.storage.cookiesStorage;
+
 	App.router = new App.proto.router();
+
 	App.router.default_part = 'games';
 	Backbone.history.start({pushState : true});
 	

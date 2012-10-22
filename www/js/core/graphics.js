@@ -99,8 +99,8 @@ App.graphics.wrappers.raphael = (function() {
 			return that;
 		},
 
-		DrawChart : function(cx, cy, nRadius, aData, nTotalVal, attr, name) {
-			var el = that._handler.pieChart(cx, cy, nRadius, aData, nTotalVal, attr);
+		DrawChart : function(cx, cy, nRadius, aData, nTotalVal, name) {
+			var el = that._handler.pieChart(cx, cy, nRadius, aData, nTotalVal);
 			that._aElements[name ? name : that._nInternalID++] = el;
 			return that;		
 		}
